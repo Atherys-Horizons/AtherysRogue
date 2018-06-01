@@ -19,15 +19,12 @@ public class StartScreenState extends GraphicalState {
     @Override
     public void update(GameTerminal terminal) throws IOException {
 
-        if (rendered) {
-            KeyStroke pressedKey = terminal.getTerminal().readInput();
+        KeyStroke pressedKey = terminal.getTerminal().pollInput();
 
-            if (pressedKey.getKeyType() == KeyType.Enter) {
-                State newState = new GenerateCaveState();
-                newState.start();
-                AtherysRogue.getInstance().setState(newState);
-            }
-            return;
+        if (pressedKey != null && pressedKey.getKeyType() == KeyType.Enter) {
+            State newState = new GenerateCaveState();
+            newState.start();
+            AtherysRogue.getInstance().setState(newState);
         }
 
         TerminalSize size = Config.getInstance().getTerminalSize();
@@ -61,8 +58,6 @@ public class StartScreenState extends GraphicalState {
                 "Press [Enter] To Proceed..."
         ));
         terminal.draw(startWindow);
-
-        rendered = true;
     }
 
     @Override

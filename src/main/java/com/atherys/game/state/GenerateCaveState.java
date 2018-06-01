@@ -13,8 +13,8 @@ import java.io.IOException;
 
 public class GenerateCaveState extends GraphicalState {
 
-    private static final int CAVE_SIZE_X = 95;
-    private static final int CAVE_SIZE_Y = 35;
+    private static final int CAVE_SIZE_X = 120;
+    private static final int CAVE_SIZE_Y = 45;
     private static final double CAVE_STONE = 0.46d;
     private static final int CAVE_ITERATIONS = 1;
 
@@ -32,29 +32,30 @@ public class GenerateCaveState extends GraphicalState {
         cave = new Cave(CAVE_SIZE_X, CAVE_SIZE_Y, CAVE_STONE, CAVE_ITERATIONS);
         graphics = new CaveMap(CAVE_POSITION_X, CAVE_POSITION_Y, cave);
 
-        player = new Player(Location.of(cave, 12, 13));
+        player = new Player(Location.of(cave, 60, 27));
         cave.spawnEntity(player);
     }
 
     @Override
     public void update(GameTerminal terminal) throws IOException {
 
-        KeyStroke keyStroke = terminal.getTerminal().readInput();
+        KeyStroke keyStroke = terminal.getTerminal().pollInput();
 
-        if (keyStroke.getKeyType() == KeyType.Escape) {
-            AtherysRogue.getInstance().setClosed(true);
-            return;
+        if (keyStroke != null) {
+            if (keyStroke.getKeyType() == KeyType.Escape) {
+                AtherysRogue.getInstance().setClosed(true);
+                return;
+            }
+
+            if (keyStroke.getKeyType() == KeyType.ArrowRight) player.moveRight();
+
+            if (keyStroke.getKeyType() == KeyType.ArrowLeft) player.moveLeft();
+
+            if (keyStroke.getKeyType() == KeyType.ArrowDown) player.moveDown();
+
+            if (keyStroke.getKeyType() == KeyType.ArrowUp) player.moveUp();
         }
 
-        if (keyStroke.getKeyType() == KeyType.ArrowRight) player.moveRight();
-
-        if (keyStroke.getKeyType() == KeyType.ArrowLeft) player.moveLeft();
-
-        if (keyStroke.getKeyType() == KeyType.ArrowDown) player.moveDown();
-
-        if (keyStroke.getKeyType() == KeyType.ArrowUp) player.moveUp();
-
-        terminal.getTerminal().clearScreen();
         terminal.draw(graphics);
     }
 

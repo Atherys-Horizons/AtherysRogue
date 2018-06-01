@@ -8,9 +8,9 @@ public abstract class AbstractMaterial implements Material {
     private TextCharacter representation;
     private boolean passable;
 
-    public AbstractMaterial(String id, boolean passable, char representation) {
+    public AbstractMaterial(String id, boolean passable, TextCharacter representation) {
         this.id = id;
-        this.representation = new TextCharacter(representation);
+        this.representation = representation;
         this.passable = passable;
     }
 

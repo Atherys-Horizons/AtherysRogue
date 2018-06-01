@@ -6,8 +6,8 @@ public final class MaterialUtils {
 
     private static final Material[] FLOOR_MATERIALS = new Material[]{
             GRASS_FLOOR,
-            STONE_FLOOR,
-            WATER
+            STONE_FLOOR
+            //WATER
     };
     private static final Material[] WALL_MATERIALS = new Material[]{
             STONE_WALL

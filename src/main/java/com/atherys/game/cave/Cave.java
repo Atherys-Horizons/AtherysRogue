@@ -35,9 +35,7 @@ public class Cave {
         ArrayUtils.forEachNonNull(map, (row, column, cell) -> {
             if (column == 0 || column == map.length - 1 || row == 0 || row == map[0].length - 1) return;
 
-            if (cell.getMaterial().equals(Materials.WATER) && getAdjacentWalls(row, column, Materials.WATER) >= ALIVE_THRESHHOLD)
-                cell.setMaterial(Materials.WATER);
-            else if (cell.getMaterial() instanceof FloorMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) >= ALIVE_THRESHHOLD)
+            if (cell.getMaterial() instanceof FloorMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) >= ALIVE_THRESHHOLD)
                 cell.setMaterial(Materials.STONE_WALL);
             else if (cell.getMaterial() instanceof WallMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) < SURVIVAL_THRESHHOLD)
                 cell.setMaterial(Materials.STONE_FLOOR);
