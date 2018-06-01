@@ -68,4 +68,12 @@ public class Vector2i implements Vector2<Integer> {
     public Vector2<Integer> div(Vector2<Integer> other) {
         return of(this.x / other.getX(), this.y / other.getY());
     }
+
+    @Override
+    public String toString() {
+        return "Vector2i{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

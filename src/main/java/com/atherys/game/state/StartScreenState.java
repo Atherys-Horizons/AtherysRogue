@@ -14,22 +14,15 @@ import java.util.Arrays;
 
 public class StartScreenState extends GraphicalState {
 
-    private boolean rendered;
+    private Drawable startWindow;
 
     @Override
-    public void update(GameTerminal terminal) throws IOException {
-
-        KeyStroke pressedKey = terminal.getTerminal().pollInput();
-
-        if (pressedKey != null && pressedKey.getKeyType() == KeyType.Enter) {
-            State newState = new GenerateCaveState();
-            newState.start();
-            AtherysRogue.getInstance().setState(newState);
-        }
+    public void start() {
+        super.start();
 
         TerminalSize size = Config.getInstance().getTerminalSize();
 
-        Drawable startWindow = new TextBox(0, 0, size.getColumns() - 1, size.getRows() - 1, "A'therys Adventures: Syrthavon Cavern", Arrays.asList(
+        startWindow = new TextBox(0, 0, size.getColumns() - 1, size.getRows() - 1, "A'therys Adventures: Syrthavon Cavern", Arrays.asList(
                 "In the world of A'therys, there is a place where time does not run in the predictable fashion. Cyclically, reversed, even sideways; Limnas Von has seen fit to wrest time from its forward march deep in the caves of Syrthavon. The cavern seems to draw in adventurers who pass near, beckoning them to what lies within. On any given day, what lies within the cavern may change, both in space and time...",
                 "",
                 "**********************************************************************************",
@@ -57,7 +50,20 @@ public class StartScreenState extends GraphicalState {
                 "",
                 "Press [Enter] To Proceed..."
         ));
+    }
+
+    @Override
+    public void update(GameTerminal terminal) throws IOException {
+
         terminal.draw(startWindow);
+
+        KeyStroke pressedKey = terminal.getTerminal().pollInput();
+
+        if (pressedKey != null && pressedKey.getKeyType() == KeyType.Enter) {
+            State newState = new MainGameState();
+            newState.start();
+            AtherysRogue.getInstance().setState(newState);
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.atherys.game.state;
 import com.atherys.game.AtherysRogue;
 import com.atherys.game.cave.Cave;
 import com.atherys.game.graphics.GameTerminal;
-import com.atherys.game.graphics.drawable.CaveMap;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -28,15 +27,15 @@ public final class TextEditorState extends GraphicalState {
             t.flush();
         });
 
-        this.cave = new Cave(120, 45, 0.47d, 2);
+        this.cave = new Cave(120, 45, 0.47d, 2, 5, 4);
     }
 
     @Override
     public void update(GameTerminal terminal) throws IOException {
 
         if (!caveDrawn) {
-            CaveMap map = new CaveMap(0, 0, cave);
-            terminal.draw(map);
+            //CaveView map = new CaveView(0, 0, cave);
+            //terminal.draw(map);
             caveDrawn = true;
         }
 

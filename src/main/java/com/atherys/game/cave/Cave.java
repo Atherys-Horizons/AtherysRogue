@@ -10,15 +10,19 @@ import java.util.List;
 
 public class Cave {
 
-    private static final int ALIVE_THRESHHOLD = 5;
-    private static final int SURVIVAL_THRESHHOLD = 4;
+    private int wallThreshhold = 5;
+    private int floorThreshhold = 4;
 
     private Cell[][] map;
 
     private List<Entity> entities = new ArrayList<>();
 
-    public Cave(int sizeX, int sizeY, double wallPercentage, int iterations) {
+    public Cave(int sizeX, int sizeY, double wallPercentage, int iterations, int wallThreshhold, int floorThreshhold) {
         this.map = new Cell[sizeY][sizeX];
+
+        this.wallThreshhold = wallThreshhold;
+        this.floorThreshhold = floorThreshhold;
+
         ArrayUtils.forEach(map, (row, column, cell) -> {
             Material material;
             if (column == 0 || column == sizeY - 1 || row == 0 || row == sizeX - 1) material = Materials.STONE_WALL;
@@ -35,9 +39,9 @@ public class Cave {
         ArrayUtils.forEachNonNull(map, (row, column, cell) -> {
             if (column == 0 || column == map.length - 1 || row == 0 || row == map[0].length - 1) return;
 
-            if (cell.getMaterial() instanceof FloorMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) >= ALIVE_THRESHHOLD)
+            if (cell.getMaterial() instanceof FloorMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) >= wallThreshhold)
                 cell.setMaterial(Materials.STONE_WALL);
-            else if (cell.getMaterial() instanceof WallMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) < SURVIVAL_THRESHHOLD)
+            else if (cell.getMaterial() instanceof WallMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) < floorThreshhold)
                 cell.setMaterial(Materials.STONE_FLOOR);
         });
 

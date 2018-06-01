@@ -11,7 +11,7 @@ public class Config {
     }
 
     public TerminalSize getTerminalSize() {
-        return new TerminalSize(120, 45);
+        return new TerminalSize(90, 52);
     }
 
 }

@@ -21,5 +21,4 @@ public interface Vector2<T> {
     Vector2<T> div(T number);
 
     Vector2<T> div(Vector2<T> other);
-
 }
