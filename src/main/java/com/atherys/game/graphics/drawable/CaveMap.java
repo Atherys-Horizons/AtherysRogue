@@ -19,10 +19,7 @@ public class CaveMap implements Drawable {
 
     @Override
     public void apply(TextGraphics surface) {
-        ArrayUtils.forEachNonNull(cave.getMap(), (row, column, cell) -> {
-            surface.setCharacter(x + row, y + column, cell.getMaterial().getChar());
-        });
-
-        cave.getEntites().forEach(entity -> entity.getDrawable().apply(surface));
+        ArrayUtils.forEachNonNull(cave.getMap(), (row, column, cell) -> surface.setCharacter(x + row, y + column, cell.getMaterial().getChar()));
+        cave.getEntites().forEach(entity -> surface.setCharacter(entity.getLocation().asTerminalPosition(), entity.getChar()));
     }
 }

@@ -2,8 +2,8 @@ package com.atherys.game.state;
 
 import com.atherys.game.AtherysRogue;
 import com.atherys.game.cave.Cave;
-import com.atherys.game.entity.Human;
 import com.atherys.game.entity.Location;
+import com.atherys.game.entity.Player;
 import com.atherys.game.graphics.GameTerminal;
 import com.atherys.game.graphics.drawable.CaveMap;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -22,17 +22,17 @@ public class GenerateCaveState extends GraphicalState {
     private static final int CAVE_POSITION_Y = 0;
 
     private Cave cave;
-    private CaveMap map;
+    private CaveMap graphics;
 
-    private Human player;
+    private Player player;
 
     @Override
     public void start() {
         super.start();
         cave = new Cave(CAVE_SIZE_X, CAVE_SIZE_Y, CAVE_STONE, CAVE_ITERATIONS);
-        map = new CaveMap(CAVE_POSITION_X, CAVE_POSITION_Y, cave);
+        graphics = new CaveMap(CAVE_POSITION_X, CAVE_POSITION_Y, cave);
 
-        player = new Human(Location.of(cave, 12, 13));
+        player = new Player(Location.of(cave, 12, 13));
         cave.spawnEntity(player);
     }
 
@@ -55,7 +55,7 @@ public class GenerateCaveState extends GraphicalState {
         if (keyStroke.getKeyType() == KeyType.ArrowUp) player.moveUp();
 
         terminal.getTerminal().clearScreen();
-        terminal.draw(map);
+        terminal.draw(graphics);
     }
 
     @Override

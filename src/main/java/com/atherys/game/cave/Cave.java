@@ -1,9 +1,6 @@
 package com.atherys.game.cave;
 
-import com.atherys.game.cave.material.FloorMaterial;
-import com.atherys.game.cave.material.Material;
-import com.atherys.game.cave.material.Materials;
-import com.atherys.game.cave.material.WallMaterial;
+import com.atherys.game.cave.material.*;
 import com.atherys.game.entity.Entity;
 import com.atherys.game.math.RandomUtils;
 import com.atherys.game.utils.ArrayUtils;
@@ -13,8 +10,8 @@ import java.util.List;
 
 public class Cave {
 
-    private static int ALIVE_THRESHHOLD = 5;
-    private static int SURVIVAL_THRESHHOLD = 4;
+    private static final int ALIVE_THRESHHOLD = 5;
+    private static final int SURVIVAL_THRESHHOLD = 4;
 
     private Cell[][] map;
 
@@ -66,7 +63,7 @@ public class Cave {
 
     private Material getRandomMaterial(double percentStone) {
         if (percentStone >= Math.random()) return Materials.STONE_WALL;
-        return Materials.getFloorMaterials()[RandomUtils.between(0, Materials.getFloorMaterials().length)];
+        return MaterialUtils.getFloorMaterials()[RandomUtils.between(0, MaterialUtils.getFloorMaterials().length)];
     }
 
     public boolean isValidCell(int x, int y) {

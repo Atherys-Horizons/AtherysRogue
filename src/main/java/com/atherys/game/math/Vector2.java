@@ -1,41 +1,25 @@
 package com.atherys.game.math;
 
-public abstract class Vector2<T extends Number> {
+public interface Vector2<T> {
 
-    protected T x;
-    protected T y;
+    T getX();
 
-    public Vector2(T x, T y) {
-        this.x = x;
-        this.y = y;
-    }
+    T getY();
 
-    public Vector2(Vector2<T> position) {
-        this.x = position.x;
-        this.y = position.y;
-    }
+    Vector2<T> add(T number);
 
-    public T getX() {
-        return x;
-    }
+    Vector2<T> add(Vector2<T> other);
 
-    public T getY() {
-        return y;
-    }
+    Vector2<T> rem(T number);
 
-    public abstract Vector2<T> add(T number);
+    Vector2<T> rem(Vector2<T> other);
 
-    public abstract Vector2<T> add(Vector2<T> other);
+    Vector2<T> mul(T number);
 
-    public abstract Vector2<T> rem(T number);
+    Vector2<T> mul(Vector2<T> other);
 
-    public abstract Vector2<T> rem(Vector2<T> other);
+    Vector2<T> div(T number);
 
-    public abstract Vector2<T> mul(T number);
+    Vector2<T> div(Vector2<T> other);
 
-    public abstract Vector2<T> mul(Vector2<T> other);
-
-    public abstract Vector2<T> div(T number);
-
-    public abstract Vector2<T> div(Vector2<T> other);
 }

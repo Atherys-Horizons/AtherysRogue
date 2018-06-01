@@ -2,6 +2,7 @@ package com.atherys.game.entity;
 
 import com.atherys.game.cave.Cave;
 import com.atherys.game.math.Vector2i;
+import com.googlecode.lanterna.TerminalPosition;
 
 public class Location extends Vector2i {
 
@@ -28,5 +29,9 @@ public class Location extends Vector2i {
 
     public Cave getCave() {
         return cave;
+    }
+
+    public TerminalPosition asTerminalPosition() {
+        return new TerminalPosition(x, y);
     }
 }

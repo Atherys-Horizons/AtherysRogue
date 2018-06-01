@@ -6,4 +6,6 @@ public interface Material extends CharRepresentable {
 
     String getId();
 
+    boolean isPassable();
+
 }

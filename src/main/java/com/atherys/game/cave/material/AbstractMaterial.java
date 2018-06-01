@@ -6,10 +6,12 @@ public abstract class AbstractMaterial implements Material {
 
     private String id;
     private TextCharacter representation;
+    private boolean passable;
 
-    public AbstractMaterial(String id, char representation) {
+    public AbstractMaterial(String id, boolean passable, char representation) {
         this.id = id;
         this.representation = new TextCharacter(representation);
+        this.passable = passable;
     }
 
     @Override
@@ -20,5 +22,10 @@ public abstract class AbstractMaterial implements Material {
     @Override
     public TextCharacter getChar() {
         return representation;
+    }
+
+    @Override
+    public boolean isPassable() {
+        return passable;
     }
 }

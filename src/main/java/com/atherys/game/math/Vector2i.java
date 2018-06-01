@@ -1,16 +1,32 @@
 package com.atherys.game.math;
 
-public class Vector2i extends Vector2<Integer> {
+public class Vector2i implements Vector2<Integer> {
+
+    protected Integer x;
+    protected Integer y;
+
     public Vector2i(Integer x, Integer y) {
-        super(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public Vector2i(Vector2<Integer> position) {
-        super(position);
+        this.x = position.getX();
+        this.y = position.getY();
     }
 
     public static Vector2i of(Integer x, Integer y) {
         return new Vector2i(x, y);
+    }
+
+    @Override
+    public Integer getX() {
+        return x;
+    }
+
+    @Override
+    public Integer getY() {
+        return y;
     }
 
     @Override
@@ -20,7 +36,7 @@ public class Vector2i extends Vector2<Integer> {
 
     @Override
     public Vector2<Integer> add(Vector2<Integer> other) {
-        return of(this.x + other.x, this.y + other.y);
+        return of(this.x + other.getX(), this.y + other.getY());
     }
 
     @Override
@@ -30,7 +46,7 @@ public class Vector2i extends Vector2<Integer> {
 
     @Override
     public Vector2<Integer> rem(Vector2<Integer> other) {
-        return of(this.x - other.x, this.y - other.y);
+        return of(this.x - other.getX(), this.y - other.getY());
     }
 
     @Override
@@ -40,7 +56,7 @@ public class Vector2i extends Vector2<Integer> {
 
     @Override
     public Vector2<Integer> mul(Vector2<Integer> other) {
-        return of(this.x * other.x, this.y * other.y);
+        return of(this.x * other.getX(), this.y * other.getY());
     }
 
     @Override
@@ -50,6 +66,6 @@ public class Vector2i extends Vector2<Integer> {
 
     @Override
     public Vector2<Integer> div(Vector2<Integer> other) {
-        return of(this.x / other.x, this.y / other.y);
+        return of(this.x / other.getX(), this.y / other.getY());
     }
 }
