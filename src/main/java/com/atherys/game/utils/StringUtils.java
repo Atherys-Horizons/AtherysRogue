@@ -34,12 +34,12 @@ public final class StringUtils {
                 line = new StringBuilder();
             }
 
-            line.append(word).append(" ");
-
             if (word.endsWith("\n")) {
                 lines.add(line.toString());
                 line = new StringBuilder();
             }
+
+            line.append(word).append(" ");
         }
         lines.add(line.toString());
 

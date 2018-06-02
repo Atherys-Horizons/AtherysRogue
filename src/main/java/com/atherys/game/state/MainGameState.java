@@ -11,8 +11,6 @@ import com.atherys.game.graphics.GameTerminal;
 import com.atherys.game.graphics.drawable.*;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
-import com.googlecode.lanterna.TextCharacter;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -22,7 +20,7 @@ import java.util.Arrays;
 
 public class MainGameState extends GraphicalState {
 
-    private static final int CAVE_SEED = Long.hashCode(System.currentTimeMillis());
+    private static final int CAVE_SEED = 9001;
 
     private static final Vector2i CAVE_SIZE = Vector2i.of(254, 256);
     private static final int CAVE_ITERATIONS = 2;
@@ -35,8 +33,8 @@ public class MainGameState extends GraphicalState {
 
     private static final int CAVE_VIEW_POSITION_X = 0;
     private static final int CAVE_VIEW_POSITION_Y = 0;
-    private static final int CAVE_VIEW_SIZE_X = 53;
-    private static final int CAVE_VIEW_SIZE_Y = 31;
+    private static final int CAVE_VIEW_SIZE_X = 55;
+    private static final int CAVE_VIEW_SIZE_Y = 33;
 
     private Cave cave;
 
@@ -44,8 +42,8 @@ public class MainGameState extends GraphicalState {
     private TextBox info;
     private Log console;
 
-    private CompactProgressBar compactHP;
-    private ProgressBar HP;
+    //private CompactProgressBar compactHP;
+    //private ProgressBar HP;
 
     private Player player;
 
@@ -77,8 +75,8 @@ public class MainGameState extends GraphicalState {
 
         console = new Log("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 10);
 
-        compactHP = new CompactProgressBar("HP", 55, 10, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
-        HP = new ProgressBar("HP", 55, 12, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
+        //compactHP = new CompactProgressBar("HP", 55, 10, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
+        //HP = new ProgressBar("HP", 55, 12, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
 
         terminal.exec(Terminal::clearScreen);
     }
@@ -97,29 +95,29 @@ public class MainGameState extends GraphicalState {
             if (keyStroke.getKeyType() == KeyType.ArrowRight) {
                 player.moveRight();
                 console.push("Moved Right.");
-                compactHP.setProgress(Math.random() * compactHP.getMax());
-                HP.setProgress(Math.random() * HP.getMax());
+                //compactHP.setProgress(Math.random() * compactHP.getMax());
+                //HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowLeft) {
                 player.moveLeft();
                 console.push("Moved Left.");
-                compactHP.setProgress(Math.random() * compactHP.getMax());
-                HP.setProgress(Math.random() * HP.getMax());
+                //compactHP.setProgress(Math.random() * compactHP.getMax());
+                //HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowDown) {
                 player.moveDown();
                 console.push("Moved Down.");
-                compactHP.setProgress(Math.random() * compactHP.getMax());
-                HP.setProgress(Math.random() * HP.getMax());
+                //compactHP.setProgress(Math.random() * compactHP.getMax());
+                //HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowUp) {
                 player.moveUp();
                 console.push("Moved Up.");
-                compactHP.setProgress(Math.random() * compactHP.getMax());
-                HP.setProgress(Math.random() * HP.getMax());
+                //compactHP.setProgress(Math.random() * compactHP.getMax());
+                //HP.setProgress(Math.random() * HP.getMax());
             }
         }
 
@@ -127,8 +125,8 @@ public class MainGameState extends GraphicalState {
         terminal.draw(info);
         terminal.draw(console);
 
-        terminal.draw(compactHP);
-        terminal.draw(HP);
+        //terminal.draw(compactHP);
+        //terminal.draw(HP);
     }
 
     @Override

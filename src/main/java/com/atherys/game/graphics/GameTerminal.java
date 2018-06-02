@@ -2,11 +2,10 @@ package com.atherys.game.graphics;
 
 import com.atherys.game.Config;
 import com.atherys.game.graphics.drawable.Drawable;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.SimpleTerminalResizeListener;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.TerminalEmulatorAutoCloseTrigger;
+import com.googlecode.lanterna.terminal.swing.*;
 
+import javax.swing.*;
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -16,21 +15,22 @@ public class GameTerminal implements Closeable {
 
     private Terminal terminal;
 
-    public GameTerminal() {
-        try {
-            DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+    private GameTerminal() {
+        SwingTerminalFrame swingTerminalFrame = new SwingTerminalFrame(
+                "A'therys Adventures: Syrthavon Cavern " + Config.getInstance().getVersion(),
+                Config.getInstance().getTerminalSize(),
+                TerminalEmulatorDeviceConfiguration.getDefault(),
+                SwingTerminalFontConfiguration.getDefault(),
+                TerminalEmulatorColorConfiguration.getDefault(),
+                TerminalEmulatorAutoCloseTrigger.CloseOnEscape
+        );
 
-            defaultTerminalFactory.setTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnEscape);
-            defaultTerminalFactory.setInitialTerminalSize(Config.getInstance().getTerminalSize());
-            defaultTerminalFactory.setTerminalEmulatorTitle("A'therys Adventures: Syrthavon Cavern " + Config.getInstance().getVersion());
+        swingTerminalFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        swingTerminalFrame.setResizable(false);
+        swingTerminalFrame.setCursorVisible(false);
+        swingTerminalFrame.setVisible(true);
 
-            terminal = defaultTerminalFactory.createTerminal();
-            terminal.addResizeListener(new SimpleTerminalResizeListener(Config.getInstance().getTerminalSize()));
-            terminal.setCursorVisible(false);
-            //terminal.enterPrivateMode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        terminal = swingTerminalFrame;
     }
 
     public static GameTerminal getInstance() {
@@ -62,6 +62,7 @@ public class GameTerminal implements Closeable {
     public void close() {
         try {
             //terminal.exitPrivateMode();
+            //screen.stopScreen();
             terminal.close();
         } catch (IOException e) {
             e.printStackTrace();

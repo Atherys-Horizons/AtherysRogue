@@ -11,11 +11,11 @@ public class Config {
     }
 
     public String getVersion() {
-        return "v1.0.0-alpha";
+        return "v1.0.2-alpha";
     }
 
     public TerminalSize getTerminalSize() {
-        return new TerminalSize(86, 45);
+        return new TerminalSize(87, 46);
     }
 
 }
