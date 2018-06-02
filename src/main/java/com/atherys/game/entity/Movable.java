@@ -1,4 +1,4 @@
-package com.atherys.game.base;
+package com.atherys.game.entity;
 
 public interface Movable {
 

@@ -24,7 +24,38 @@ public final class Materials {
 
     public static final Material STONE_WALL = new WallMaterial("stone_wall", new TextCharacter(' ', WALL_COLOR, WALL_COLOR));
 
-    public static final Material GRASS_FLOOR = new FloorMaterial("grass_floor", true, new TextCharacter(',', TextColor.ANSI.GREEN, FLOOR_COLOR, SGR.ITALIC));
+    public static final Material ROCK = new FloorMaterial(
+            "pebbles",
+            true,
+            new TextCharacter(
+                    '•',
+                    new TextColor.RGB(FLOOR_COLOR.getRed() + 24, FLOOR_COLOR.getGreen() + 24, FLOOR_COLOR.getBlue() + 24),
+                    FLOOR_COLOR,
+                    SGR.ITALIC
+            )
+    );
+
+    public static final Material STALAGMITE = new FloorMaterial(
+            "stalagmite",
+            true,
+            new TextCharacter(
+                    '▲',
+                    new TextColor.RGB(FLOOR_COLOR.getRed() + 24, FLOOR_COLOR.getGreen() + 24, FLOOR_COLOR.getBlue() + 24),
+                    FLOOR_COLOR,
+                    SGR.ITALIC
+            )
+    );
+
+    public static final Material WATER_PUDDLE = new FloorMaterial(
+            "water_puddle",
+            true,
+            new TextCharacter(
+                    '●',
+                    new TextColor.RGB(0, FLOOR_COLOR.getGreen() + 24, FLOOR_COLOR.getBlue() + 24),
+                    FLOOR_COLOR,
+                    SGR.ITALIC
+            )
+    );
 
     public static final Material STONE_FLOOR = new FloorMaterial(
             "stone_floor",

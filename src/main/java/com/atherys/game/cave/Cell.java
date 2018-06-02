@@ -22,4 +22,8 @@ public class Cell {
     public void setMaterial(Material material) {
         this.material = material;
     }
+
+    public boolean isPassable() {
+        return material.isPassable();
+    }
 }

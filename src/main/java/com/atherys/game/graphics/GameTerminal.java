@@ -22,7 +22,7 @@ public class GameTerminal implements Closeable {
 
             defaultTerminalFactory.setTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnEscape);
             defaultTerminalFactory.setInitialTerminalSize(Config.getInstance().getTerminalSize());
-            defaultTerminalFactory.setTerminalEmulatorTitle("A'therys Adventures: Syrthavon Cavern");
+            defaultTerminalFactory.setTerminalEmulatorTitle("A'therys Adventures: Syrthavon Cavern " + Config.getInstance().getVersion());
 
             terminal = defaultTerminalFactory.createTerminal();
             terminal.addResizeListener(new SimpleTerminalResizeListener(Config.getInstance().getTerminalSize()));

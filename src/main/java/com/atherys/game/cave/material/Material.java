@@ -1,6 +1,6 @@
 package com.atherys.game.cave.material;
 
-import com.atherys.game.base.CharRepresentable;
+import com.atherys.game.graphics.CharRepresentable;
 
 public interface Material extends CharRepresentable {
 

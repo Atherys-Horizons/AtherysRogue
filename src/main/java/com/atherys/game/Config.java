@@ -10,6 +10,10 @@ public class Config {
         return instance;
     }
 
+    public String getVersion() {
+        return "v1.0.0-alpha";
+    }
+
     public TerminalSize getTerminalSize() {
         return new TerminalSize(90, 52);
     }

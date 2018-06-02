@@ -1,4 +1,4 @@
-package com.atherys.game.base;
+package com.atherys.game.graphics;
 
 import com.googlecode.lanterna.TextCharacter;
 

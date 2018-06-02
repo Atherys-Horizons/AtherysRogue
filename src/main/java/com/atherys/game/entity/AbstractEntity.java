@@ -26,6 +26,6 @@ public abstract class AbstractEntity implements Entity {
 
     public void move(int deltaX, int deltaY) {
         Cell moveTo = location.getCave().getCell(location.getX() + deltaX, location.getY() + deltaY);
-        if ( moveTo != null && moveTo.getMaterial().isPassable() ) location.translate(deltaX, deltaY);
+        if ( moveTo != null && moveTo.isPassable() ) location.translate(deltaX, deltaY);
     }
 }

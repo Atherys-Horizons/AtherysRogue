@@ -1,7 +1,6 @@
 package com.atherys.game.entity;
 
-import com.atherys.game.base.CharRepresentable;
-import com.atherys.game.base.Movable;
+import com.atherys.game.graphics.CharRepresentable;
 
 import java.util.UUID;
 

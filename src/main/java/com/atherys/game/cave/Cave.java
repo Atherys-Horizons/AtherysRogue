@@ -1,71 +1,18 @@
 package com.atherys.game.cave;
 
-import com.atherys.game.cave.material.*;
 import com.atherys.game.entity.Entity;
-import com.atherys.game.math.RandomUtils;
-import com.atherys.game.utils.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cave {
 
-    private int wallThreshhold = 5;
-    private int floorThreshhold = 4;
-
     private Cell[][] map;
 
     private List<Entity> entities = new ArrayList<>();
 
-    public Cave(int sizeX, int sizeY, double wallPercentage, int iterations, int wallThreshhold, int floorThreshhold) {
-        this.map = new Cell[sizeY][sizeX];
-
-        this.wallThreshhold = wallThreshhold;
-        this.floorThreshhold = floorThreshhold;
-
-        ArrayUtils.forEach(map, (row, column, cell) -> {
-            Material material;
-            if (column == 0 || column == sizeY - 1 || row == 0 || row == sizeX - 1) material = Materials.STONE_WALL;
-            else material = getRandomMaterial(wallPercentage);
-            map[column][row] = new Cell(material);
-        });
-
-        generate(iterations);
-    }
-
-    private void generate(int iteration) {
-        if (iteration == 0) return;
-
-        ArrayUtils.forEachNonNull(map, (row, column, cell) -> {
-            if (column == 0 || column == map.length - 1 || row == 0 || row == map[0].length - 1) return;
-
-            if (cell.getMaterial() instanceof FloorMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) >= wallThreshhold)
-                cell.setMaterial(Materials.STONE_WALL);
-            else if (cell.getMaterial() instanceof WallMaterial && getAdjacentWalls(row, column, Materials.STONE_WALL) < floorThreshhold)
-                cell.setMaterial(Materials.STONE_FLOOR);
-        });
-
-        generate(iteration - 1);
-    }
-
-    private int getAdjacentWalls(int x, int y, Material material) {
-        int counter = 0;
-
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0)) {
-                    Cell cell = getCell(x + j, y + i);
-                    if (cell != null && cell.getMaterial().equals(material)) counter++;
-                }
-            }
-        }
-
-        return counter;
-    }
-
-    private Material getRandomMaterial(double percentStone) {
-        if (percentStone >= Math.random()) return Materials.STONE_WALL;
-        return MaterialUtils.getFloorMaterials()[RandomUtils.between(0, MaterialUtils.getFloorMaterials().length)];
+    public Cave(Cell[][] map) {
+        this.map = map;
     }
 
     public boolean isValidCell(int x, int y) {
