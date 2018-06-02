@@ -1,9 +1,36 @@
 group 'com.atherys.game'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/"
+            exclude "java/**"
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.atherys.game.AtherysRogue'
+        )
+    }
+}
 
 compileJava.options.encoding = 'UTF-8'
 

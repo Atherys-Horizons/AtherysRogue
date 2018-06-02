@@ -6,12 +6,15 @@ public abstract class AbstractMaterial implements Material {
 
     private String id;
     private TextCharacter representation;
-    private boolean passable;
 
-    public AbstractMaterial(String id, boolean passable, TextCharacter representation) {
+    private boolean passable;
+    private boolean blocking;
+
+    public AbstractMaterial(String id, boolean passable, boolean blocking, TextCharacter representation) {
         this.id = id;
         this.representation = representation;
         this.passable = passable;
+        this.blocking = blocking;
     }
 
     @Override
@@ -27,5 +30,10 @@ public abstract class AbstractMaterial implements Material {
     @Override
     public boolean isPassable() {
         return passable;
+    }
+
+    @Override
+    public boolean isBlocking() {
+        return blocking;
     }
 }

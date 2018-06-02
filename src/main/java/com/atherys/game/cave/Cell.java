@@ -1,17 +1,17 @@
 package com.atherys.game.cave;
 
 import com.atherys.game.cave.material.Material;
-import com.atherys.game.cave.material.Materials;
+import com.atherys.game.math.Vector2i;
 
 public class Cell {
 
+    private Vector2i position;
     private Material material;
 
-    public Cell() {
-        this.material = Materials.STONE_WALL;
-    }
+    private boolean lit;
 
-    public Cell(Material material) {
+    public Cell(Vector2i position, Material material) {
+        this.position = position;
         this.material = material;
     }
 
@@ -25,5 +25,21 @@ public class Cell {
 
     public boolean isPassable() {
         return material.isPassable();
+    }
+
+    public boolean isBlocking() {
+        return material.isBlocking();
+    }
+
+    public boolean isLit() {
+        return lit;
+    }
+
+    public void setLight(boolean lit) {
+        this.lit = lit;
+    }
+
+    public Vector2i getPosition() {
+        return position;
     }
 }

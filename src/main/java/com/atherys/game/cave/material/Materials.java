@@ -69,4 +69,6 @@ public final class Materials {
 
     public static final Material WATER = new FloorMaterial("water", false, new TextCharacter('~', new TextColor.RGB(0, 127, 255), TextColor.ANSI.BLACK, SGR.ITALIC));
 
+
+    public static final TextCharacter SHADOW_CHARACTER = new TextCharacter('░', FLOOR_COLOR, TextColor.ANSI.BLACK);
 }

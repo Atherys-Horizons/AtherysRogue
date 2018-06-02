@@ -71,4 +71,20 @@ public class Box implements Drawable {
         // se corner
         surface.setCharacter(x + w, y + h, SE_CORNER);
     }
+
+    public int getWidth() {
+        return w;
+    }
+
+    public int getHeight() {
+        return h;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

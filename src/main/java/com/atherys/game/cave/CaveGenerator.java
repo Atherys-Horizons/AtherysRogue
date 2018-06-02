@@ -40,7 +40,7 @@ public class CaveGenerator {
     }
 
     private void randomize() {
-        ArrayUtils.forEach(map, (r, c, cell) -> map[c][r] = new Cell(getRandomMaterial(c, r)));
+        ArrayUtils.forEach(map, (r, c, cell) -> map[c][r] = new Cell(Vector2i.of(r, c), getRandomMaterial(c, r)));
     }
 
     private void refine(int iteration) {

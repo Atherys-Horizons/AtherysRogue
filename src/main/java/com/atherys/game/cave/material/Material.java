@@ -8,4 +8,6 @@ public interface Material extends CharRepresentable {
 
     boolean isPassable();
 
+    boolean isBlocking();
+
 }
