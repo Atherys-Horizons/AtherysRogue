@@ -32,7 +32,7 @@ public class Log extends TitleBox {
     public void apply(TextGraphics surface) {
         super.apply(surface);
         for ( int i = 0; i < lines.length; i++ ) {
-            surface.putString(x + 1, y + 1 + i, lines[i] == null ? "None" : lines[i]);
+            surface.putString(x + 1, y + 1 + i, (i + 1) + ": " + (lines[i] == null ? "None" : lines[i]) );
         }
     }
 }

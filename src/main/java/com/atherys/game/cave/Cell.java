@@ -1,6 +1,7 @@
 package com.atherys.game.cave;
 
 import com.atherys.game.cave.material.Material;
+import com.atherys.game.math.Ray;
 import com.atherys.game.math.Vector2i;
 
 public class Cell {
@@ -41,5 +42,26 @@ public class Cell {
 
     public Vector2i getPosition() {
         return position;
+    }
+
+    public boolean isVisible(Cave cave, Vector2i from) {
+        boolean[] visible = new boolean[]{true};
+
+        Ray.of(
+                this.getPosition().getX(),
+                this.getPosition().getY(),
+                from.getX(),
+                from.getY(),
+                (x,y) -> {
+                    if (x.equals(this.getPosition().getX()) && y.equals(this.getPosition().getY())) return;
+                    if (!visible[0]) return;
+
+                    Cell lineCell = cave.getCell(x, y);
+                    if ( lineCell != null && lineCell.isBlocking() ) {
+                        visible[0] = false;
+                    }
+                });
+
+        return visible[0];
     }
 }

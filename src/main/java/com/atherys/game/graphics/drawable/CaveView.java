@@ -4,7 +4,6 @@ import com.atherys.game.cave.Cave;
 import com.atherys.game.cave.Cell;
 import com.atherys.game.cave.material.Materials;
 import com.atherys.game.entity.Entity;
-import com.atherys.game.math.Ray;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
 import com.atherys.game.utils.ArrayUtils;
@@ -12,21 +11,13 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 
 import java.util.function.Predicate;
 
-public class CaveView implements Drawable {
-
-    private int x;
-    private int y;
-    private int sizeX;
-    private int sizeY;
+public class CaveView extends TitleBox {
 
     private Cave cave;
     private Player player;
 
-    public CaveView(int x, int y, int sizeX, int sizeY, Cave cave) {
-        this.x = x;
-        this.y = y;
-        this.sizeY = sizeY;
-        this.sizeX = sizeX;
+    public CaveView(int x, int y, int w, int h, Cave cave) {
+        super("View", x, y, w, h);
         this.cave = cave;
     }
 
@@ -43,58 +34,41 @@ public class CaveView implements Drawable {
 
     @Override
     public void apply(TextGraphics surface) {
+        super.apply(surface);
 
         ArrayUtils.forEach(getCellsAroundPlayer(), (row, column, cell) -> {
             if ( cell == null ) {
-                surface.setCharacter(x + row, y + column, Materials.SHADOW_CHARACTER);
+                surface.setCharacter(x + 1 + row, y + 1 + column, Materials.SHADOW_CHARACTER);
                 return;
             }
-            surface.setCharacter(x + row, y + column, cell.getMaterial().getChar());
+            surface.setCharacter(x + 1 + row, y + 1 + column, cell.getMaterial().getChar());
         });
 
         ArrayUtils.forEachNonNull(getEntitiesAroundPlayer(), (row, column, entity) -> {
-            surface.setCharacter(x + row, y + column, entity.getChar());
+            surface.setCharacter(x + 1 + row, y + 1 + column, entity.getChar());
         });
 
     }
 
     private Cell[][] getCellsAroundPlayer() {
         return getCellsWithin(
-                player.getLocation().getX() - sizeX / 2,
-                player.getLocation().getY() - sizeY / 2,
-                player.getLocation().getX() + sizeX / 2,
-                player.getLocation().getY() + sizeY / 2,
+                player.getLocation().getX() - w / 2,
+                player.getLocation().getY() - h / 2,
+                player.getLocation().getX() + w / 2,
+                player.getLocation().getY() + h / 2,
                 cell -> {
                     if ( !player.getFov().contains(cell.getPosition()) ) return false;
-
-                    boolean[] result = new boolean[]{true};
-
-                    Ray.of(
-                            cell.getPosition().getX(),
-                            cell.getPosition().getY(),
-                            player.getLocation().getX(),
-                            player.getLocation().getY(),
-                            (x,y) -> {
-                                if (x.equals(cell.getPosition().getX()) && y.equals(cell.getPosition().getY())) return;
-                                if (result[0] == false) return;
-
-                                Cell lineCell = cave.getCell(x, y);
-                                if ( lineCell != null && lineCell.isBlocking() ) {
-                                    result[0] = false;
-                                }
-                            });
-
-                    return result[0];
+                    return cell.isVisible(cave, player.getLocation());
                 }
         );
     }
 
     private Entity[][] getEntitiesAroundPlayer() {
         return getEntitiesWithin(
-                player.getLocation().getX() - sizeX / 2,
-                player.getLocation().getY() - sizeY / 2,
-                player.getLocation().getX() + sizeX / 2,
-                player.getLocation().getY() + sizeY / 2,
+                player.getLocation().getX() - w / 2,
+                player.getLocation().getY() - h / 2,
+                player.getLocation().getX() + w / 2,
+                player.getLocation().getY() + h / 2,
                 entity -> player.getFov().contains(entity.getLocation())
         );
     }

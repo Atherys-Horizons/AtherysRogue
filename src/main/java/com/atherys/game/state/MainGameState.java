@@ -8,12 +8,11 @@ import com.atherys.game.cave.material.Materials;
 import com.atherys.game.entity.Location;
 import com.atherys.game.entity.Snake;
 import com.atherys.game.graphics.GameTerminal;
-import com.atherys.game.graphics.drawable.CaveView;
-import com.atherys.game.graphics.drawable.Log;
-import com.atherys.game.graphics.drawable.TextBox;
-import com.atherys.game.graphics.drawable.TitleBox;
+import com.atherys.game.graphics.drawable.*;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -22,6 +21,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class MainGameState extends GraphicalState {
+
+    private static final int CAVE_SEED = Long.hashCode(System.currentTimeMillis());
 
     private static final Vector2i CAVE_SIZE = Vector2i.of(254, 256);
     private static final int CAVE_ITERATIONS = 2;
@@ -32,17 +33,19 @@ public class MainGameState extends GraphicalState {
             .of(Materials.STONE_WALL, 0.49d)
             .add(Materials.STONE_FLOOR, 0.51d);
 
-    private static final int CAVE_VIEW_POSITION_X = 1;
-    private static final int CAVE_VIEW_POSITION_Y = 1;
+    private static final int CAVE_VIEW_POSITION_X = 0;
+    private static final int CAVE_VIEW_POSITION_Y = 0;
     private static final int CAVE_VIEW_SIZE_X = 53;
     private static final int CAVE_VIEW_SIZE_Y = 31;
 
     private Cave cave;
 
-    private TitleBox viewBox;
     private CaveView caveView;
     private TextBox info;
     private Log console;
+
+    private CompactProgressBar compactHP;
+    private ProgressBar HP;
 
     private Player player;
 
@@ -52,7 +55,7 @@ public class MainGameState extends GraphicalState {
 
         long before = System.currentTimeMillis();
 
-        CaveGenerator generator = new CaveGenerator(1337, CAVE_MATERIAL_DISTRIBUTION, CAVE_SIZE, CAVE_WALL_THRESHHOLD, CAVE_FLOOR_THRESHHOLD, CAVE_ITERATIONS);
+        CaveGenerator generator = new CaveGenerator(CAVE_SEED, CAVE_MATERIAL_DISTRIBUTION, CAVE_SIZE, CAVE_WALL_THRESHHOLD, CAVE_FLOOR_THRESHHOLD, CAVE_ITERATIONS);
         cave = generator.getCave();
 
         long after = System.currentTimeMillis();
@@ -66,15 +69,16 @@ public class MainGameState extends GraphicalState {
 
         caveView.setPlayer(player);
 
-        viewBox = new TitleBox("View", CAVE_VIEW_POSITION_X - 1, CAVE_VIEW_POSITION_Y - 1, CAVE_VIEW_SIZE_X + 1, CAVE_VIEW_SIZE_Y + 1);
-
-        info = new TextBox(viewBox.getX() + viewBox.getWidth() + 1, viewBox.getY(), 30, viewBox.getHeight(), "Info", Arrays.asList(
+        info = new TextBox(caveView.getX() + caveView.getWidth() + 1, caveView.getY(), 30, caveView.getHeight(), "Info", Arrays.asList(
                 "Use [⇦] [⇨] [⇧] [⇩] to move around.",
                 "",
                 "Press [Esc] To Exit."
         ));
 
-        console = new Log("Log", viewBox.getX(), viewBox.getY() + viewBox.getHeight() + 1, viewBox.getWidth() + info.getWidth() - 1, 10);
+        console = new Log("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 10);
+
+        compactHP = new CompactProgressBar("HP", 55, 10, 27, 0.5d, 69, new TextCharacter('#', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
+        HP = new ProgressBar("HP", 55, 12, 27, 0.5d, 69, new TextCharacter('#', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
 
         terminal.exec(Terminal::clearScreen);
     }
@@ -111,10 +115,12 @@ public class MainGameState extends GraphicalState {
             }
         }
 
-        terminal.draw(viewBox);
         terminal.draw(caveView);
         terminal.draw(info);
         terminal.draw(console);
+
+        terminal.draw(compactHP);
+        terminal.draw(HP);
     }
 
     @Override
