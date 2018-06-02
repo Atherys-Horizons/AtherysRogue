@@ -4,6 +4,7 @@ import com.atherys.game.cave.Cave;
 import com.atherys.game.cave.Cell;
 import com.atherys.game.cave.material.Materials;
 import com.atherys.game.entity.Entity;
+import com.atherys.game.math.Ray;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
 import com.atherys.game.utils.ArrayUtils;
@@ -42,6 +43,7 @@ public class CaveView implements Drawable {
 
     @Override
     public void apply(TextGraphics surface) {
+
         ArrayUtils.forEach(getCellsAroundPlayer(), (row, column, cell) -> {
             if ( cell == null ) {
                 surface.setCharacter(x + row, y + column, Materials.SHADOW_CHARACTER);
@@ -53,6 +55,7 @@ public class CaveView implements Drawable {
         ArrayUtils.forEachNonNull(getEntitiesAroundPlayer(), (row, column, entity) -> {
             surface.setCharacter(x + row, y + column, entity.getChar());
         });
+
     }
 
     private Cell[][] getCellsAroundPlayer() {
@@ -61,7 +64,28 @@ public class CaveView implements Drawable {
                 player.getLocation().getY() - sizeY / 2,
                 player.getLocation().getX() + sizeX / 2,
                 player.getLocation().getY() + sizeY / 2,
-                cell -> player.getFov().contains(cell.getPosition())
+                cell -> {
+                    if ( !player.getFov().contains(cell.getPosition()) ) return false;
+
+                    boolean[] result = new boolean[]{true};
+
+                    Ray.of(
+                            cell.getPosition().getX(),
+                            cell.getPosition().getY(),
+                            player.getLocation().getX(),
+                            player.getLocation().getY(),
+                            (x,y) -> {
+                                if (x.equals(cell.getPosition().getX()) && y.equals(cell.getPosition().getY())) return;
+                                if (result[0] == false) return;
+
+                                Cell lineCell = cave.getCell(x, y);
+                                if ( lineCell != null && lineCell.isBlocking() ) {
+                                    result[0] = false;
+                                }
+                            });
+
+                    return result[0];
+                }
         );
     }
 
