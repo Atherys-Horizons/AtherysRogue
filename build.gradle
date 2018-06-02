@@ -1,5 +1,5 @@
-group 'com.atherys.game'
-version 'v1.0.1-alpha'
+group = 'com.atherys.game'
+version = 'v1.0.1-alpha'
 
 buildscript {
     repositories {

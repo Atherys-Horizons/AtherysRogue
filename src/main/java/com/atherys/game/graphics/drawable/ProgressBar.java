@@ -22,9 +22,9 @@ public class ProgressBar extends TitleBox {
         setProgress(initialProgress);
     }
 
-    private void setProgress(double amount) {
-        this.progress = MathUtils.clamp(0.0d, 1.0d, amount);
-        this.title = String.format("%s[%.1f/%.1f]", actualTitle, progress*max, max);
+    public void setProgress(double amount) {
+        this.progress = amount > 1.0d ? amount / max : MathUtils.clamp(0.0d, 1.0d, amount);
+        this.title = String.format("%s[%.1f/%.1f]", actualTitle, progress * max, max);
     }
 
     public double getProgress() {
@@ -39,11 +39,20 @@ public class ProgressBar extends TitleBox {
         setProgress(progress - amount);
     }
 
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
     @Override
     public void apply(TextGraphics surface) {
         super.apply(surface);
-        for ( int i = 0; i < ( w - 1 ) * progress; i++ ) {
-            surface.setCharacter(x + 1 + i, y + 1, filler);
+        for (int i = 1; i < w; i++) {
+            if (i <= w * progress) surface.setCharacter(x + i, y + 1, filler);
+            else surface.setCharacter(x + i, y + 1, TextCharacter.DEFAULT_CHARACTER);
         }
     }
 }

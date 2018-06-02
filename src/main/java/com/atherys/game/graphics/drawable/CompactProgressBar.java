@@ -13,8 +13,13 @@ public class CompactProgressBar extends ProgressBar {
         surface.putString(x, y, title);
         surface.setCharacter(x + title.length(), y, '[');
         surface.setCharacter(x + w, y, ']');
-        for ( int i = title.length() + 1; i < ( title.length() + 1 + w ) * progress; i++ ) {
-            surface.setCharacter(x + i, y, filler);
+
+        int start = title.length() + 1;
+        int stop = w;
+
+        for (int i = start; i < stop; i++) {
+            if (i <= stop * progress) surface.setCharacter(x + i, y, filler);
+            else surface.setCharacter(x + i, y, TextCharacter.DEFAULT_CHARACTER);
         }
     }
 }

@@ -77,8 +77,8 @@ public class MainGameState extends GraphicalState {
 
         console = new Log("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 10);
 
-        compactHP = new CompactProgressBar("HP", 55, 10, 27, 0.5d, 69, new TextCharacter('#', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
-        HP = new ProgressBar("HP", 55, 12, 27, 0.5d, 69, new TextCharacter('#', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
+        compactHP = new CompactProgressBar("HP", 55, 10, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
+        HP = new ProgressBar("HP", 55, 12, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
 
         terminal.exec(Terminal::clearScreen);
     }
@@ -97,21 +97,29 @@ public class MainGameState extends GraphicalState {
             if (keyStroke.getKeyType() == KeyType.ArrowRight) {
                 player.moveRight();
                 console.push("Moved Right.");
+                compactHP.setProgress(Math.random() * compactHP.getMax());
+                HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowLeft) {
                 player.moveLeft();
                 console.push("Moved Left.");
+                compactHP.setProgress(Math.random() * compactHP.getMax());
+                HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowDown) {
                 player.moveDown();
                 console.push("Moved Down.");
+                compactHP.setProgress(Math.random() * compactHP.getMax());
+                HP.setProgress(Math.random() * HP.getMax());
             }
 
             if (keyStroke.getKeyType() == KeyType.ArrowUp) {
                 player.moveUp();
                 console.push("Moved Up.");
+                compactHP.setProgress(Math.random() * compactHP.getMax());
+                HP.setProgress(Math.random() * HP.getMax());
             }
         }
 
