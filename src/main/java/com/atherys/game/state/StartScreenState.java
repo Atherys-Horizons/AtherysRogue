@@ -2,6 +2,7 @@ package com.atherys.game.state;
 
 import com.atherys.game.AtherysRogue;
 import com.atherys.game.Config;
+import com.atherys.game.control.Controls;
 import com.atherys.game.graphics.GameTerminal;
 import com.atherys.game.graphics.drawable.Drawable;
 import com.atherys.game.graphics.drawable.TextBox;
@@ -50,6 +51,14 @@ public class StartScreenState extends GraphicalState {
                 "",
                 "Press [Enter] To Proceed..."
         ));
+
+        Controls.register(new KeyStroke(KeyType.Escape), stroke -> AtherysRogue.getInstance().setClosed(true));
+        Controls.register(new KeyStroke(KeyType.Enter), stroke -> {
+            Controls.remove(new KeyStroke(KeyType.Enter));
+            State newState = new MainGameState();
+            newState.start();
+            AtherysRogue.getInstance().setState(newState);
+        });
     }
 
     @Override
@@ -57,13 +66,15 @@ public class StartScreenState extends GraphicalState {
 
         terminal.draw(startWindow);
 
-        KeyStroke pressedKey = terminal.getTerminal().pollInput();
+        Controls.trigger(terminal.getTerminal().pollInput());
 
-        if (pressedKey != null && pressedKey.getKeyType() == KeyType.Enter) {
-            State newState = new MainGameState();
-            newState.start();
-            AtherysRogue.getInstance().setState(newState);
-        }
+        //KeyStroke pressedKey = terminal.getTerminal().pollInput();
+//
+        //if (pressedKey != null && pressedKey.getKeyType() == KeyType.Enter) {
+        //    State newState = new MainGameState();
+        //    newState.start();
+        //    AtherysRogue.getInstance().setState(newState);
+        //}
     }
 
     @Override

@@ -1,14 +1,16 @@
 package com.atherys.game.state;
 
-import com.atherys.game.AtherysRogue;
 import com.atherys.game.cave.Cave;
 import com.atherys.game.cave.CaveGenerator;
 import com.atherys.game.cave.MaterialDistribution;
 import com.atherys.game.cave.material.Materials;
+import com.atherys.game.control.Controls;
 import com.atherys.game.entity.Location;
 import com.atherys.game.entity.Snake;
 import com.atherys.game.graphics.GameTerminal;
-import com.atherys.game.graphics.drawable.*;
+import com.atherys.game.graphics.drawable.CaveView;
+import com.atherys.game.graphics.drawable.Log;
+import com.atherys.game.graphics.drawable.TextBox;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -79,47 +81,32 @@ public class MainGameState extends GraphicalState {
         //HP = new ProgressBar("HP", 55, 12, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
 
         terminal.exec(Terminal::clearScreen);
+
+        Controls.register(new KeyStroke(KeyType.ArrowRight), stroke -> {
+            player.moveRight();
+            console.push("Moved Right.");
+        });
+
+        Controls.register(new KeyStroke(KeyType.ArrowLeft), stroke -> {
+            player.moveLeft();
+            console.push("Moved Left.");
+        });
+
+        Controls.register(new KeyStroke(KeyType.ArrowUp), stroke -> {
+            player.moveUp();
+            console.push("Moved Up.");
+        });
+
+        Controls.register(new KeyStroke(KeyType.ArrowDown), stroke -> {
+            player.moveDown();
+            console.push("Moved Down.");
+        });
     }
 
     @Override
     public void update(GameTerminal terminal) throws IOException {
 
-        KeyStroke keyStroke = terminal.getTerminal().pollInput();
-
-        if (keyStroke != null) {
-            if (keyStroke.getKeyType() == KeyType.Escape) {
-                AtherysRogue.getInstance().setClosed(true);
-                return;
-            }
-
-            if (keyStroke.getKeyType() == KeyType.ArrowRight) {
-                player.moveRight();
-                console.push("Moved Right.");
-                //compactHP.setProgress(Math.random() * compactHP.getMax());
-                //HP.setProgress(Math.random() * HP.getMax());
-            }
-
-            if (keyStroke.getKeyType() == KeyType.ArrowLeft) {
-                player.moveLeft();
-                console.push("Moved Left.");
-                //compactHP.setProgress(Math.random() * compactHP.getMax());
-                //HP.setProgress(Math.random() * HP.getMax());
-            }
-
-            if (keyStroke.getKeyType() == KeyType.ArrowDown) {
-                player.moveDown();
-                console.push("Moved Down.");
-                //compactHP.setProgress(Math.random() * compactHP.getMax());
-                //HP.setProgress(Math.random() * HP.getMax());
-            }
-
-            if (keyStroke.getKeyType() == KeyType.ArrowUp) {
-                player.moveUp();
-                console.push("Moved Up.");
-                //compactHP.setProgress(Math.random() * compactHP.getMax());
-                //HP.setProgress(Math.random() * HP.getMax());
-            }
-        }
+        Controls.trigger(terminal.getTerminal().pollInput());
 
         terminal.draw(caveView);
         terminal.draw(info);
