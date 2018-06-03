@@ -44,14 +44,16 @@ public class Cell {
         return position;
     }
 
-    public boolean isVisible(Cave cave, Vector2i from) {
+    public boolean isVisibleFrom(Cave cave, Cell cell) {
+        return !CellRay.of(cave, cell, this).first(otherCell -> !otherCell.equals(this) && otherCell.isBlocking()).isPresent();
+    }
+
+    public boolean isVisibleFrom(Cave cave, Vector2i from) {
         boolean[] visible = new boolean[]{true};
 
         Ray.of(
-                this.getPosition().getX(),
-                this.getPosition().getY(),
-                from.getX(),
-                from.getY(),
+                this.getPosition().getX(), this.getPosition().getY(),
+                from.getX(), from.getY(),
                 (x,y) -> {
                     if (x.equals(this.getPosition().getX()) && y.equals(this.getPosition().getY())) return;
                     if (!visible[0]) return;

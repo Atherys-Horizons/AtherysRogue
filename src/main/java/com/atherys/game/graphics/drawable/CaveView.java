@@ -36,6 +36,8 @@ public class CaveView extends TitleBox {
     public void apply(TextGraphics surface) {
         super.apply(surface);
 
+        long before = System.currentTimeMillis();
+
         ArrayUtils.forEach(getCellsAroundPlayer(), (row, column, cell) -> {
             if ( cell == null ) {
                 surface.setCharacter(x + 1 + row, y + 1 + column, Materials.SHADOW_CHARACTER);
@@ -48,9 +50,15 @@ public class CaveView extends TitleBox {
             surface.setCharacter(x + 1 + row, y + 1 + column, entity.getChar());
         });
 
+        long after = System.currentTimeMillis();
+
+        System.out.println("Drawing cave took " + (after-before) + "ms.");
+
     }
 
     private Cell[][] getCellsAroundPlayer() {
+        Cell playerCell = cave.getCell(player.getLocation().getX(), player.getLocation().getY());
+
         return getCellsWithin(
                 player.getLocation().getX() - w / 2,
                 player.getLocation().getY() - h / 2,
@@ -58,7 +66,7 @@ public class CaveView extends TitleBox {
                 player.getLocation().getY() + h / 2,
                 cell -> {
                     if ( !player.getFov().contains(cell.getPosition()) ) return false;
-                    return cell.isVisible(cave, player.getLocation());
+                    return cell.isVisibleFrom(cave, playerCell);
                 }
         );
     }
