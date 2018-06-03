@@ -12,6 +12,7 @@ import com.atherys.game.entity.Snake;
 import com.atherys.game.graphics.GameTerminal;
 import com.atherys.game.graphics.drawable.CaveView;
 import com.atherys.game.graphics.drawable.Log;
+import com.atherys.game.graphics.drawable.Table;
 import com.atherys.game.graphics.drawable.TextBox;
 import com.atherys.game.graphics.surface.LayeredSurface;
 import com.atherys.game.math.Vector2i;
@@ -34,6 +35,7 @@ public class MainGameState extends GraphicalState {
     private static final MaterialDistribution CAVE_MATERIAL_DISTRIBUTION =
             MaterialDistribution.of(CAVE_SEED)
             .add(Materials.STONE_WALL, 0.49d)
+            .add(Materials.STALACTITE, 0.10d)
             .add(Materials.STONE_FLOOR, 0.41d)
             .add(Materials.ROCK, 0.10d)
             .add(Materials.STALAGMITE, 0.04d)
@@ -77,15 +79,15 @@ public class MainGameState extends GraphicalState {
                 "Press [Esc] To Exit."
         ));
 
-        log = new Log("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 10);
+        log = new Log("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 9);
 
         //compactHP = new CompactProgressBar("HP", 55, 10, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
         //HP = new ProgressBar("HP", 55, 12, 27, 1.0d, 69, new TextCharacter('♥', TextColor.ANSI.RED, TextColor.ANSI.BLACK));
 
-        surface.add(caveView);
-        surface.add(info);
-        surface.add(log);
-
+        surface.add(0, caveView);
+        surface.add(0, info);
+        surface.add(0, log);
+        surface.add(1, new Table(info.getX() + 1, info.getY() + 17, 4, 3, 5, 7));
         terminal.exec(Terminal::clearScreen);
 
         Controls.register(new KeyStroke(KeyType.ArrowRight), stroke -> {

@@ -4,6 +4,14 @@ import java.util.function.BiConsumer;
 
 public final class ArrayUtils {
 
+    public static void iterate(int iStart, int iStop, int iStep, int jStart, int jStop, int jStep, BiConsumer<Integer, Integer> consumer) {
+        for (int i = iStart; i < iStop; i += iStep) {
+            for (int j = jStart; j < jStop; j += jStep) {
+                consumer.accept(i, j);
+            }
+        }
+    }
+
     public static <T> void forEach(T[] arr, BiConsumer<Integer, T> consumer) {
         for (int i = 0; i < arr.length; i++) {
             consumer.accept(i, arr[i]);

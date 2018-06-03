@@ -22,7 +22,18 @@ public final class Materials {
 
     public static final TextColor.RGB WALL_COLOR =  new TextColor.RGB(168, 168, 168);
 
+    public static final TextCharacter SHADOW_CHARACTER = new TextCharacter('▒', new TextColor.RGB(32, 32, 32), TextColor.ANSI.BLACK);
+
     public static final Material STONE_WALL = new WallMaterial("stone_wall", new TextCharacter(' ', WALL_COLOR, WALL_COLOR));
+
+    public static final Material STALACTITE = new WallMaterial(
+            "stalactite",
+            new TextCharacter(
+                    '▼',
+                    new TextColor.RGB(WALL_COLOR.getRed() - 24, WALL_COLOR.getGreen() - 24, WALL_COLOR.getBlue() - 24),
+                    WALL_COLOR
+            )
+    );
 
     public static final Material ROCK = new FloorMaterial(
             "pebbles",
@@ -69,6 +80,4 @@ public final class Materials {
 
     public static final Material WATER = new FloorMaterial("water", false, new TextCharacter('~', new TextColor.RGB(0, 127, 255), TextColor.ANSI.BLACK, SGR.ITALIC));
 
-
-    public static final TextCharacter SHADOW_CHARACTER = new TextCharacter('▒', FLOOR_COLOR, TextColor.ANSI.BLACK);
 }
