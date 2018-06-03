@@ -1,34 +1,30 @@
 package com.atherys.game.cave;
 
 import com.atherys.game.cave.material.FloorMaterial;
-import com.atherys.game.cave.material.Material;
-import com.atherys.game.cave.material.Materials;
 import com.atherys.game.cave.material.WallMaterial;
+import com.atherys.game.entity.Location;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.utils.ArrayUtils;
 
 import java.util.Random;
-import java.util.function.Predicate;
+import java.util.function.BiConsumer;
 
 public class CaveGenerator {
 
+    private Cave cave;
+
     private Random random;
     private MaterialDistribution distribution;
-    private int iterations;
 
     private int wallThreshhold;
     private int floorThreshhold;
 
-    private Cell[][] map;
+    /**
+     * A boolean 2D array representing where there ought and ought not to be Passable cells.
+     */
+    private Boolean[][] wallMap;
 
-    public CaveGenerator(MaterialDistribution distribution, Vector2i caveSize, int wallThreshhold, int floorThreshhold, int iterations) {
-        this.random = new Random();
-        this.map = new Cell[caveSize.getY()][caveSize.getX()];
-        this.distribution = distribution;
-        this.wallThreshhold = wallThreshhold;
-        this.floorThreshhold = floorThreshhold;
-        this.iterations = iterations;
-    }
+    private Cell[][] map;
 
     public CaveGenerator(int seed, MaterialDistribution distribution, Vector2i caveSize, int wallThreshhold, int floorThreshhold, int iterations) {
         this.random = new Random(seed);
@@ -36,62 +32,92 @@ public class CaveGenerator {
         this.distribution = distribution;
         this.wallThreshhold = wallThreshhold;
         this.floorThreshhold = floorThreshhold;
-        this.iterations = iterations;
+
+        this.cave = new Cave();
+        generateWallMap(caveSize.getX(), caveSize.getY(), iterations);
+        generateCells();
     }
 
-    private void randomize() {
-        ArrayUtils.forEach(map, (r, c, cell) -> map[c][r] = new Cell(Vector2i.of(r, c), getRandomMaterial(c, r)));
-    }
+    private void generateWallMap(int sizeX, int sizeY, int iterations) {
+        wallMap = new Boolean[sizeX][sizeY];
 
-    private void refine(int iteration) {
-        if (iteration == 0) return;
-
-        ArrayUtils.forEachNonNull(map, (row, column, cell) -> {
-            if (column == 0 || column == map.length - 1 || row == 0 || row == map[0].length - 1) return;
-
-            if (cell.getMaterial() instanceof FloorMaterial && getAdjacentCells(row, column, c -> !c.isPassable()) >= wallThreshhold) {
-                cell.setMaterial(distribution.getRandomMaterial(material -> material instanceof WallMaterial));
-            } else if (cell.getMaterial() instanceof WallMaterial && getAdjacentCells(row, column, c -> !c.isPassable()) < floorThreshhold) {
-                cell.setMaterial(distribution.getRandomMaterial(material -> material instanceof FloorMaterial));
-            }
+        ArrayUtils.forEach(wallMap, (r, c, v) -> {
+            wallMap[c][r] = random.nextBoolean();
         });
 
-        refine(iteration - 1);
+        refineWallMap(iterations);
     }
 
-    private int getAdjacentCells(int x, int y, Predicate<Cell> check) {
+    private void refineWallMap(int iterations) {
+        if (iterations == 0) return;
+
+        ArrayUtils.forEach(wallMap, (r, c, wall) -> {
+            if (isOnBorder(r, c)) {
+                wallMap[c][r] = true;
+                return;
+            }
+
+            if (!wall && getAdjacentWalls(c, r) >= wallThreshhold) wallMap[c][r] = true;
+            else if (wall && getAdjacentWalls(c, r) < floorThreshhold) wallMap[c][r] = false;
+        });
+
+        refineWallMap(iterations - 1);
+    }
+
+    private int getAdjacentWalls(int c, int r) {
         int counter = 0;
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0)) {
-                    Cell cell = getCell(x + j, y + i);
-                    if (cell != null && check.test(cell)) counter++;
-                }
+                if (!(i == 0 && j == 0) && !isOutOfBounds(r + j, c + i) && wallMap[c + i][r + j])
+                    counter++;
             }
         }
 
         return counter;
     }
 
-
-    private Material getRandomMaterial(int x, int y) {
-        if (x == 0 || x == map.length - 1 || y == 0 || y == map[0].length - 1) return Materials.STONE_WALL;
-        return distribution.getRandomMaterial(random);
+    private void forEachInWallMap(boolean walls, BiConsumer<Integer, Integer> consumer) {
+        ArrayUtils.forEach(wallMap, (r, c, v) -> {
+            if (v == walls) consumer.accept(r, c);
+        });
     }
 
-    private boolean isValidCell(int x, int y) {
-        return (x >= 0 && y >= 0) && y < map.length && x < map[0].length;
+    private void forEachWall(BiConsumer<Integer, Integer> consumer) {
+        forEachInWallMap(true, consumer);
     }
 
-    private Cell getCell(int x, int y) {
-        return isValidCell(x, y) ? map[y][x] : null;
+    private void forEachNonWall(BiConsumer<Integer, Integer> consumer) {
+        forEachInWallMap(false, consumer);
+    }
+
+    private void generateCells() {
+        forEachWall((r, c) -> {
+            map[r][c] = new Cell(
+                    new Location(cave, c, r),
+                    distribution.next(WallMaterial.class)
+            );
+        });
+
+        forEachNonWall((r, c) -> {
+            map[r][c] = new Cell(
+                    new Location(cave, c, r),
+                    distribution.next(FloorMaterial.class)
+            );
+        });
+    }
+
+    private boolean isOnBorder(int r, int c) {
+        return c == 0 || c == wallMap.length - 1 || r == 0 || r == wallMap[0].length - 1;
+    }
+
+    private boolean isOutOfBounds(int r, int c) {
+        return c < 0 || c == wallMap.length - 1 || r < 0 || r == wallMap[0].length - 1;
     }
 
     public Cave getCave() {
-        randomize();
-        refine(iterations);
-        return new Cave(map);
+        cave.setMap(map);
+        return cave;
     }
 
 }

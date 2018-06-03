@@ -1,18 +1,19 @@
 package com.atherys.game.cave;
 
 import com.atherys.game.cave.material.Material;
+import com.atherys.game.entity.Location;
 import com.atherys.game.math.Ray;
 import com.atherys.game.math.Vector2i;
 
 public class Cell {
 
-    private Vector2i position;
+    private Location location;
     private Material material;
 
     private boolean lit;
 
-    public Cell(Vector2i position, Material material) {
-        this.position = position;
+    public Cell(Location location, Material material) {
+        this.location = location;
         this.material = material;
     }
 
@@ -40,25 +41,26 @@ public class Cell {
         this.lit = lit;
     }
 
-    public Vector2i getPosition() {
-        return position;
+    public Location getLocation() {
+        return location;
     }
 
-    public boolean isVisibleFrom(Cave cave, Cell cell) {
-        return !CellRay.of(cave, cell, this).first(otherCell -> !otherCell.equals(this) && otherCell.isBlocking()).isPresent();
+    public boolean isVisibleFrom(Cell cell) {
+        return !CellRay.of(cell, this).first(otherCell -> !otherCell.equals(this) && otherCell.isBlocking()).isPresent();
     }
 
-    public boolean isVisibleFrom(Cave cave, Vector2i from) {
+    public boolean isVisibleFrom(Vector2i from) {
+        if ( isBlocking() ) return true;
         boolean[] visible = new boolean[]{true};
 
         Ray.of(
-                this.getPosition().getX(), this.getPosition().getY(),
+                this.getLocation().getX(), this.getLocation().getY(),
                 from.getX(), from.getY(),
                 (x,y) -> {
-                    if (x.equals(this.getPosition().getX()) && y.equals(this.getPosition().getY())) return;
+                    if (x.equals(this.getLocation().getX()) && y.equals(this.getLocation().getY())) return;
                     if (!visible[0]) return;
 
-                    Cell lineCell = cave.getCell(x, y);
+                    Cell lineCell = getLocation().getCave().getCell(x, y);
                     if ( lineCell != null && lineCell.isBlocking() ) {
                         visible[0] = false;
                     }

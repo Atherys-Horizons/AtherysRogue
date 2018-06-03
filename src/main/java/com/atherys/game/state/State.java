@@ -9,4 +9,5 @@ public interface State {
     void update();
 
     void stop();
+
 }

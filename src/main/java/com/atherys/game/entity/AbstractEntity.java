@@ -4,7 +4,7 @@ import com.atherys.game.cave.Cell;
 
 import java.util.UUID;
 
-public abstract class AbstractEntity implements Entity {
+public abstract class AbstractEntity implements Entity, Movable {
 
     protected UUID uuid;
     protected Location location;

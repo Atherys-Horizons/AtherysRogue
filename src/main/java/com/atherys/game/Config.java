@@ -11,7 +11,7 @@ public class Config {
     }
 
     public String getVersion() {
-        return "v1.0.2-alpha";
+        return "v1.0.3-alpha";
     }
 
     public TerminalSize getTerminalSize() {

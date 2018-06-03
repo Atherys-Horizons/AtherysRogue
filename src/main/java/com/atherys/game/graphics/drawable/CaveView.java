@@ -4,7 +4,6 @@ import com.atherys.game.cave.Cave;
 import com.atherys.game.cave.Cell;
 import com.atherys.game.cave.material.Materials;
 import com.atherys.game.entity.Entity;
-import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
 import com.atherys.game.utils.ArrayUtils;
 import com.googlecode.lanterna.graphics.TextGraphics;
@@ -27,16 +26,11 @@ public class CaveView extends TitleBox {
 
     public void setPlayer(Player player) {
         this.player = player;
-        ArrayUtils.forEachNonNull(getCellsAroundPlayer(), (r,c,cell) -> {
-            if ( player.getFov().borders(cell.getPosition()) ) System.out.println(getSlope(player.getLocation(), cell.getPosition()));
-        });
     }
 
     @Override
     public void apply(TextGraphics surface) {
         super.apply(surface);
-
-        long before = System.currentTimeMillis();
 
         ArrayUtils.forEach(getCellsAroundPlayer(), (row, column, cell) -> {
             if ( cell == null ) {
@@ -50,10 +44,6 @@ public class CaveView extends TitleBox {
             surface.setCharacter(x + 1 + row, y + 1 + column, entity.getChar());
         });
 
-        long after = System.currentTimeMillis();
-
-        System.out.println("Drawing cave took " + (after-before) + "ms.");
-
     }
 
     private Cell[][] getCellsAroundPlayer() {
@@ -64,20 +54,19 @@ public class CaveView extends TitleBox {
                 player.getLocation().getY() - h / 2,
                 player.getLocation().getX() + w / 2,
                 player.getLocation().getY() + h / 2,
-                cell -> {
-                    if ( !player.getFov().contains(cell.getPosition()) ) return false;
-                    return cell.isVisibleFrom(cave, playerCell);
-                }
+                cell -> player.getFov().contains(cell.getLocation()) && cell.isVisibleFrom(playerCell)
         );
     }
 
     private Entity[][] getEntitiesAroundPlayer() {
+        Cell playerCell = cave.getCell(player.getLocation().getX(), player.getLocation().getY());
         return getEntitiesWithin(
                 player.getLocation().getX() - w / 2,
                 player.getLocation().getY() - h / 2,
                 player.getLocation().getX() + w / 2,
                 player.getLocation().getY() + h / 2,
-                entity -> player.getFov().contains(entity.getLocation())
+                entity -> player.getFov().contains(entity.getLocation()) &&
+                        cave.getCell(entity.getLocation().getX(), entity.getLocation().getY()).isVisibleFrom(playerCell)
         );
     }
 
@@ -107,10 +96,5 @@ public class CaveView extends TitleBox {
         });
 
         return entities;
-    }
-
-    private float getSlope(Vector2i start, Vector2i stop) {
-        if ( start.getY().equals( stop.getY() ) ) return 0;
-        return (start.getX() - stop.getX()) / (start.getY() - stop.getY());
     }
 }

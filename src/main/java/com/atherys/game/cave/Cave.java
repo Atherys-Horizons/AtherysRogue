@@ -11,6 +11,8 @@ public class Cave {
 
     private List<Entity> entities = new ArrayList<>();
 
+    protected Cave() {}
+
     public Cave(Cell[][] map) {
         this.map = map;
     }
@@ -25,6 +27,10 @@ public class Cave {
 
     public Cell[][] getMap() {
         return map;
+    }
+
+    protected void setMap(Cell[][] map) {
+        this.map = map;
     }
 
     public List<Entity> getEntites() {

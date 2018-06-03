@@ -4,7 +4,7 @@ import com.atherys.game.graphics.CharRepresentable;
 
 import java.util.UUID;
 
-public interface Entity extends CharRepresentable, Movable {
+public interface Entity extends CharRepresentable {
 
     UUID getUniqueId();
 

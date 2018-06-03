@@ -6,16 +6,19 @@ import com.atherys.game.cave.material.Materials;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Predicate;
 
 public class MaterialDistribution extends HashMap<Material,Double> {
 
-    public MaterialDistribution(Material material, Double distribution) {
-        this.put(material, distribution);
+    private Map<Class<? extends Material>, Material> defaults = new HashMap<>();
+
+    private Random random;
+
+    public MaterialDistribution(int seed) {
+        this.random = new Random(seed);
     }
 
-    public static MaterialDistribution of(Material material, Double distribution) {
-        return new MaterialDistribution(material, distribution);
+    public static MaterialDistribution of(int seed) {
+        return new MaterialDistribution(seed);
     }
 
     public MaterialDistribution add(Material material, Double distribution) {
@@ -23,40 +26,27 @@ public class MaterialDistribution extends HashMap<Material,Double> {
         return this;
     }
 
-    Material getRandomMaterial(Random random) {
-        Material result = Materials.STONE_FLOOR;
+    public MaterialDistribution setDefault(Class<? extends Material> clazz, Material material) {
+        this.defaults.put(clazz, material);
+        return this;
+    }
 
-        // Generate a random number between 0.0d and 1.0d
+    Material next(Class<? extends Material> clazz) {
+        Material result = defaults.getOrDefault(clazz, Materials.STONE_WALL);
+
         double k = random.nextDouble();
 
         double lastDiff = 1.0d;
 
         // Iterate over every material in the MaterialDistribution
         for ( Map.Entry<Material,Double> object : this.entrySet() ) {
-            // Get the difference between this materials weight and the random number
-            double diff = Math.abs(k - object.getValue());
-
-            // If the material passes the predicate,
-            // and its difference with the randomly generated number is less than the previous material,
-            // set it as the result
-            if (diff < lastDiff) {
-                result = object.getKey();
-                lastDiff = diff;
-            }
-        }
-
-        return result;
-    }
-
-    Material getRandomMaterial(Predicate<Material> check) {
-        Material result = Materials.STONE_FLOOR;
-
-        // Iterate over every material in the MaterialDistribution
-        for ( Map.Entry<Material,Double> object : this.entrySet() ) {
-
             // If the material answers the requirements
-            if (check.test(object.getKey())) {
-                result = object.getKey();
+            if ( k <= object.getValue() && clazz.isAssignableFrom(object.getKey().getClass())) {
+                double diff = Math.abs(k - object.getValue());
+                if ( diff < lastDiff ) {
+                    result = object.getKey();
+                    lastDiff = diff;
+                }
             }
         }
 

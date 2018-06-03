@@ -17,8 +17,8 @@ public class CellRay extends Ray {
         this.cave = cave;
     }
 
-    public static CellRay of(Cave cave, Cell start, Cell stop) {
-        return new CellRay(cave, start.getPosition().getX(), start.getPosition().getY(), stop.getPosition().getX(), stop.getPosition().getY());
+    public static CellRay of(Cell start, Cell stop) {
+        return new CellRay(start.getLocation().getCave(), start.getLocation().getX(), start.getLocation().getY(), stop.getLocation().getX(), stop.getLocation().getY());
     }
 
     public void forEach(Consumer<Cell> cellConsumer) {
