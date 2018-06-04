@@ -1,15 +1,18 @@
 package com.atherys.game.cave;
 
 import com.atherys.game.entity.Entity;
+import com.atherys.game.entity.Location;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class Cave {
 
     private Cell[][] map;
 
-    private List<Entity> entities = new ArrayList<>();
+    private Set<Entity> entities = new HashSet<>();
 
     protected Cave() {}
 
@@ -33,11 +36,26 @@ public class Cave {
         this.map = map;
     }
 
-    public List<Entity> getEntites() {
+    public Set<Entity> getEntites() {
         return entities;
+    }
+
+    public void spawnEntities(Collection<Entity> entityCollection) {
+        entityCollection.forEach(this::spawnEntity);
     }
 
     public void spawnEntity(Entity entity) {
         this.entities.add(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        this.entities.remove(entity);
+    }
+
+    public Optional<Entity> pollForEntity(Location location) {
+        for ( Entity entity : entities ) {
+            if ( entity.getLocation().equals(location) ) return Optional.of(entity);
+        }
+        return Optional.empty();
     }
 }

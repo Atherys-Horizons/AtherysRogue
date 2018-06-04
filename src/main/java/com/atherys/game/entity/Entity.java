@@ -10,4 +10,6 @@ public interface Entity extends CharRepresentable {
 
     Location getLocation();
 
+    <T extends Entity> void interact(T player);
+
 }

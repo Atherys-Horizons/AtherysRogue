@@ -3,6 +3,8 @@ package com.atherys.game.entity;
 import com.atherys.game.cave.Cave;
 import com.atherys.game.math.Vector2i;
 
+import java.util.Objects;
+
 public class Location extends Vector2i {
 
     private Cave cave;
@@ -28,5 +30,18 @@ public class Location extends Vector2i {
 
     public Cave getCave() {
         return cave;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(cave, location.cave) && x.equals(location.x) && y.equals(location.y);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cave, x, y);
     }
 }

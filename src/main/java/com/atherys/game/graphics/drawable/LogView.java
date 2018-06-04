@@ -2,11 +2,11 @@ package com.atherys.game.graphics.drawable;
 
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-public class Log extends TitleBox {
+public class LogView extends TitleBox {
 
     private String[] lines;
 
-    public Log(String title, int x, int y, int maxWidth, int numLines) {
+    public LogView(String title, int x, int y, int maxWidth, int numLines) {
         super(title, x, y, maxWidth + 2, numLines + 1);
         this.lines = new String[numLines];
     }

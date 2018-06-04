@@ -2,14 +2,21 @@ package com.atherys.game.cave;
 
 import com.atherys.game.cave.material.FloorMaterial;
 import com.atherys.game.cave.material.WallMaterial;
+import com.atherys.game.entity.Entity;
+import com.atherys.game.entity.GroundItem;
 import com.atherys.game.entity.Location;
+import com.atherys.game.item.ItemGenerator;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.utils.ArrayUtils;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class CaveGenerator {
+
+    private final static double ITEM_GENERATION_CHANCE = 0.008d;
 
     private Cave cave;
 
@@ -25,6 +32,7 @@ public class CaveGenerator {
     private Boolean[][] wallMap;
 
     private Cell[][] map;
+    private Set<Entity> entities = new HashSet<>();
 
     public CaveGenerator(int seed, MaterialDistribution distribution, Vector2i caveSize, int wallThreshhold, int floorThreshhold, int iterations) {
         this.random = new Random(seed);
@@ -36,6 +44,17 @@ public class CaveGenerator {
         this.cave = new Cave();
         generateWallMap(caveSize.getX(), caveSize.getY(), iterations);
         generateCells();
+        generateItems();
+    }
+
+    private void generateItems() {
+        ArrayUtils.forEach(wallMap, (r, c, v) -> {
+            if ( v ) return;
+
+            if ( Math.random() < ITEM_GENERATION_CHANCE ) {
+                entities.add(new GroundItem(ItemGenerator.getRandom(4), Location.of(cave, c, r)));
+            }
+        });
     }
 
     private void generateWallMap(int sizeX, int sizeY, int iterations) {
@@ -117,6 +136,7 @@ public class CaveGenerator {
 
     public Cave getCave() {
         cave.setMap(map);
+        cave.spawnEntities(entities);
         return cave;
     }
 

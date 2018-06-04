@@ -2,6 +2,7 @@ package com.atherys.game.entity;
 
 import com.atherys.game.cave.Cell;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class AbstractEntity implements Entity, Movable {
@@ -26,6 +27,18 @@ public abstract class AbstractEntity implements Entity, Movable {
 
     public void move(int deltaX, int deltaY) {
         Cell moveTo = location.getCave().getCell(location.getX() + deltaX, location.getY() + deltaY);
-        if ( moveTo != null && moveTo.isPassable() ) location.translate(deltaX, deltaY);
+        if ( moveTo != null && moveTo.isPassable() ) {
+            Optional<Entity> entity = location.getCave().pollForEntity(moveTo.getLocation());
+            if ( entity.isPresent() ) {
+                entity.get().interact(this);
+            } else {
+                location.translate(deltaX, deltaY);
+            }
+        }
+    }
+
+    @Override
+    public <T extends Entity> void interact(T player) {
+
     }
 }

@@ -5,11 +5,11 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 
 public class Table extends Box {
 
-    private static final char NORTH_TRIPOINT = '╦';
-    private static final char SOUTH_TRIPOINT = '╩';
-    private static final char WEST_TRIPOINT = '╠';
-    private static final char EAST_TRIPOINT = '╣';
-    private static final char QUADPOINT = '╬';
+    public static final char NORTH_TRIPOINT = '╦';
+    public static final char SOUTH_TRIPOINT = '╩';
+    public static final char WEST_TRIPOINT = '╠';
+    public static final char EAST_TRIPOINT = '╣';
+    public static final char QUADPOINT = '╬';
 
     private int cellWidth;
     private int cellHeight;
@@ -27,10 +27,6 @@ public class Table extends Box {
 
     @Override
     public void apply(TextGraphics surface) {
-        super.apply(surface);
-
-        int modCheckY = cellHeight % 2 + y % 2;
-
         ArrayUtils.iterate(x, x + w + 1, cellWidth, y, y + h + 1, 1, (i, j) -> {
 
             if (i == x && j == y) {
@@ -72,4 +68,19 @@ public class Table extends Box {
         });
     }
 
+    public int getCellWidth() {
+        return cellWidth;
+    }
+
+    public int getCellHeight() {
+        return cellHeight;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
 }
