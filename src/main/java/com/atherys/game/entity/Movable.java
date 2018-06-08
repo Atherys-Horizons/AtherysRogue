@@ -4,20 +4,36 @@ public interface Movable {
 
     void move(int deltaX, int deltaY);
 
-    default void moveLeft() {
+    default void moveWest() {
         move(-1, 0);
     }
 
-    default void moveRight() {
+    default void moveEast() {
         move(+1, 0);
     }
 
-    default void moveUp() {
+    default void moveNorth() {
         move(0, -1);
     }
 
-    default void moveDown() {
+    default void moveSouth() {
         move(0, +1);
+    }
+
+    default void moveNorthWest() {
+        move(-1, -1);
+    }
+
+    default void moveNorthEast() {
+        move(+1, -1);
+    }
+
+    default void moveSouthWest() {
+        move(-1, +1);
+    }
+
+    default void moveSouthEast() {
+        move(+1, +1);
     }
 
 }

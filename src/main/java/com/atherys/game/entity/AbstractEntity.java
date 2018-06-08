@@ -25,6 +25,7 @@ public abstract class AbstractEntity implements Entity, Movable {
         return location;
     }
 
+    @Override
     public void move(int deltaX, int deltaY) {
         Cell moveTo = location.getCave().getCell(location.getX() + deltaX, location.getY() + deltaY);
         if ( moveTo != null && moveTo.isPassable() ) {
@@ -38,7 +39,7 @@ public abstract class AbstractEntity implements Entity, Movable {
     }
 
     @Override
-    public <T extends Entity> void interact(T player) {
+    public <T extends Entity> void interact(T entity) {
 
     }
 }

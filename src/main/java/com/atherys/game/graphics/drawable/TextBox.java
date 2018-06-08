@@ -25,7 +25,7 @@ public class TextBox extends TitleBox {
         int j = 0;
         for (String line : contents) {
             if (line.length() > w - 2) {
-                List<String> sublines = StringUtils.wordWrapLines(line, w - 2 - ( w % 2 == 0 ? 0 : 1 ));
+                List<String> sublines = StringUtils.wordWrapLines(line, w - 2);
 
                 for (String subline : sublines) {
                     surface.putString(x + 2, y + 2 + j, subline);

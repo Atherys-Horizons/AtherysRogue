@@ -1,5 +1,6 @@
 package com.atherys.game.entity;
 
+import com.atherys.game.Log;
 import com.atherys.game.item.ItemStack;
 import com.atherys.game.player.Player;
 import com.googlecode.lanterna.TextCharacter;
@@ -46,8 +47,9 @@ public class GroundItem implements Entity {
         if ( entity instanceof Player ) {
             location.getCave().removeEntity(this);
             if ( !((Player) entity).getInventory().add(this.getItem()) ) {
-                // Log the failure
-                System.out.println("Failed to pick up item");
+                Log.warn("Failed to pick up %s[%02d]", item.getName(), item.getAmount());
+            } else {
+                Log.info("Picked up %s[%02d]", item.getName(), item.getAmount());
             }
         }
     }

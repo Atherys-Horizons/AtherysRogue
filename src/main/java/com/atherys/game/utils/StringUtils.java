@@ -11,7 +11,7 @@ public final class StringUtils {
         String[] words = string.split(" ");
 
         for (String word : words) {
-            if (builder.length() + word.length() > maxWidth) {
+            if (builder.length() + word.length() + 1 > maxWidth) {
                 builder.append("\n");
             }
 
@@ -29,7 +29,7 @@ public final class StringUtils {
         StringBuilder line = new StringBuilder();
         for (String word : words) {
 
-            if (line.length() + word.length() > maxWidth) {
+            if (line.length() + word.length() + 1 > maxWidth) {
                 lines.add(line.toString());
                 line = new StringBuilder();
             }

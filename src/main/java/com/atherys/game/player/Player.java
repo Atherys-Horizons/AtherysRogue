@@ -1,6 +1,7 @@
 package com.atherys.game.player;
 
 import com.atherys.game.cave.material.Materials;
+import com.atherys.game.entity.Entity;
 import com.atherys.game.entity.Human;
 import com.atherys.game.entity.Location;
 import com.atherys.game.math.Circle;
@@ -33,5 +34,10 @@ public class Player extends Human {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public <T extends Entity> void interact(T entity) {
+        super.interact(entity);
     }
 }
