@@ -2,6 +2,8 @@ package com.atherys.game.cave;
 
 import com.atherys.game.entity.Entity;
 import com.atherys.game.entity.Location;
+import com.atherys.game.math.RandomUtils;
+import com.atherys.game.player.Player;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,5 +59,16 @@ public class Cave {
             if ( entity.getLocation().equals(location) ) return Optional.of(entity);
         }
         return Optional.empty();
+    }
+
+    public Cell getRandomSpawnPoint() {
+        Cell cell = getCell(RandomUtils.between(0, map.length), RandomUtils.between(0, map[0].length));
+        if ( cell == null || cell.isBlocking() || pollForEntity(cell.getLocation()).isPresent() ) return getRandomSpawnPoint();
+        else return cell;
+    }
+
+    public void respawnPlayer(Player player) {
+        player.setLocation(getRandomSpawnPoint().getLocation());
+        player.setHealth(player.getMaxHealth());
     }
 }

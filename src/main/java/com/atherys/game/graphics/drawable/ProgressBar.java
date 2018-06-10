@@ -23,7 +23,7 @@ public class ProgressBar extends TitleBox {
     }
 
     public void setProgress(double amount) {
-        this.progress = amount > 1.0d ? amount / max : MathUtils.clamp(0.0d, 1.0d, amount);
+        this.progress = amount >= 1.0d ? amount / max : MathUtils.clamp(0.0d, 1.0d, amount);
         this.title = String.format("%s[%.1f/%.1f]", actualTitle, progress * max, max);
     }
 

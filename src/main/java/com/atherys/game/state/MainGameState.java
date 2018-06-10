@@ -7,14 +7,10 @@ import com.atherys.game.cave.material.FloorMaterial;
 import com.atherys.game.cave.material.Materials;
 import com.atherys.game.cave.material.WallMaterial;
 import com.atherys.game.control.Controls;
-import com.atherys.game.entity.Location;
-import com.atherys.game.entity.Snake;
 import com.atherys.game.graphics.GameTerminal;
-import com.atherys.game.graphics.drawable.CaveView;
-import com.atherys.game.graphics.drawable.InventoryView;
-import com.atherys.game.graphics.drawable.LogView;
-import com.atherys.game.graphics.drawable.TextBox;
+import com.atherys.game.graphics.drawable.*;
 import com.atherys.game.graphics.surface.LayeredSurface;
+import com.atherys.game.math.RandomUtils;
 import com.atherys.game.math.Vector2i;
 import com.atherys.game.player.Player;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -25,7 +21,7 @@ import java.util.Arrays;
 
 public class MainGameState extends GraphicalState {
 
-    private static final int CAVE_SEED = 1334;
+    private static final int CAVE_SEED = RandomUtils.between(0, 999999);
 
     private static final Vector2i CAVE_SIZE = Vector2i.of(254, 256);
     private static final int CAVE_ITERATIONS = 1;
@@ -58,9 +54,8 @@ public class MainGameState extends GraphicalState {
         CaveGenerator generator = new CaveGenerator(CAVE_SEED, CAVE_MATERIAL_DISTRIBUTION, CAVE_SIZE, CAVE_WALL_THRESHHOLD, CAVE_FLOOR_THRESHHOLD, CAVE_ITERATIONS);
         cave = generator.getCave();
 
-        player = new Player(Location.of(cave, 60, 27), (CAVE_VIEW_SIZE_Y / 2));
+        player = new Player(cave.getRandomSpawnPoint().getLocation(), (CAVE_VIEW_SIZE_Y / 2));
         cave.spawnEntity(player);
-        cave.spawnEntity(new Snake(Location.of(cave, 59, 26)));
 
         CaveView caveView = new CaveView(CAVE_VIEW_POSITION_X, CAVE_VIEW_POSITION_Y, CAVE_VIEW_SIZE_X, CAVE_VIEW_SIZE_Y, cave);
 
@@ -76,9 +71,13 @@ public class MainGameState extends GraphicalState {
         surface.add(0, info);
         surface.add(0, new LogView("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 9));
         surface.add(1, new InventoryView(info.getX() + 2, info.getY() + 22, player.getInventory()));
+        surface.add(1, new HealthBar(player, info.getX() + 2, info.getY() + 19, info.getWidth() - 5));
         terminal.exec(Terminal::clearScreen);
 
-        Controls.register(new KeyStroke('6', false, false), stroke -> player.moveEast());
+        Controls.register(new KeyStroke('6', false, false), stroke -> {
+            player.moveEast();
+            player.removeHealth(1.0d);
+        });
         Controls.register(new KeyStroke('4', false, false), stroke -> player.moveWest());
         Controls.register(new KeyStroke('8', false, false), stroke -> player.moveNorth());
         Controls.register(new KeyStroke('5', false, false), stroke -> player.moveSouth());

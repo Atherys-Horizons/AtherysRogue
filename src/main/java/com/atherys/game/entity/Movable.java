@@ -1,8 +1,26 @@
 package com.atherys.game.entity;
 
-public interface Movable {
+import com.atherys.game.cave.Cell;
 
-    void move(int deltaX, int deltaY);
+import java.util.Optional;
+
+public interface Movable extends Entity {
+
+    default void setLocation(Location location) {
+        move(location.getX() - getLocation().getX(), location.getY() - getLocation().getY());
+    }
+
+    default void move(int deltaX, int deltaY) {
+        Cell moveTo = getLocation().getCave().getCell(getLocation().getX() + deltaX, getLocation().getY() + deltaY);
+        if ( moveTo != null && moveTo.isPassable() ) {
+            Optional<Entity> entity = getLocation().getCave().pollForEntity(moveTo.getLocation());
+            if ( entity.isPresent() ) {
+                entity.get().interact(this);
+            } else {
+                getLocation().translate(deltaX, deltaY);
+            }
+        }
+    }
 
     default void moveWest() {
         move(-1, 0);
