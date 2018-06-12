@@ -12,9 +12,9 @@ public interface Movable extends Entity {
 
     default void move(int deltaX, int deltaY) {
         Cell moveTo = getLocation().getCave().getCell(getLocation().getX() + deltaX, getLocation().getY() + deltaY);
-        if ( moveTo != null && moveTo.isPassable() ) {
+        if (moveTo != null && moveTo.isPassable()) {
             Optional<Entity> entity = getLocation().getCave().pollForEntity(moveTo.getLocation());
-            if ( entity.isPresent() ) {
+            if (entity.isPresent()) {
                 entity.get().interact(this);
             } else {
                 getLocation().translate(deltaX, deltaY);

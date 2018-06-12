@@ -33,7 +33,7 @@ public class CaveView extends TitleBox {
         super.apply(surface);
 
         ArrayUtils.forEach(getCellsAroundPlayer(), (row, column, cell) -> {
-            if ( cell == null ) {
+            if (cell == null) {
                 surface.setCharacter(x + 1 + row, y + 1 + column, Materials.SHADOW_CHARACTER);
                 return;
             }
@@ -92,7 +92,8 @@ public class CaveView extends TitleBox {
             int r = entity.getLocation().getX() - originX;
             int c = entity.getLocation().getY() - originY;
 
-            if ( ( c > 0 && c < entities.length ) && ( r > 0 && r < entities[0].length ) && check.test(entity) ) entities[c][r] = entity;
+            if ((c > 0 && c < entities.length) && (r > 0 && r < entities[0].length) && check.test(entity))
+                entities[c][r] = entity;
         });
 
         return entities;

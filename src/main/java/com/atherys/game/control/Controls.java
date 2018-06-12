@@ -16,16 +16,6 @@ public class Controls {
     private Controls() {
     }
 
-    public void set(KeyStroke stroke, Consumer<KeyStroke> action) {
-        if (action == null) controls.remove(stroke);
-        this.controls.put(stroke, new KeyMapping(stroke, action));
-    }
-
-    public Optional<KeyMapping> get(KeyStroke stroke) {
-        if (stroke == null) return Optional.empty();
-        return Optional.ofNullable(controls.get(stroke));
-    }
-
     public static void register(KeyStroke stroke, Consumer<KeyStroke> action) {
         getInstance().set(stroke, action);
     }
@@ -40,6 +30,16 @@ public class Controls {
 
     public static Controls getInstance() {
         return instance;
+    }
+
+    public void set(KeyStroke stroke, Consumer<KeyStroke> action) {
+        if (action == null) controls.remove(stroke);
+        this.controls.put(stroke, new KeyMapping(stroke, action));
+    }
+
+    public Optional<KeyMapping> get(KeyStroke stroke) {
+        if (stroke == null) return Optional.empty();
+        return Optional.ofNullable(controls.get(stroke));
     }
 
 }

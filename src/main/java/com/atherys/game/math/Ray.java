@@ -14,11 +14,11 @@ public class Ray {
         this.endY = endY;
     }
 
-    public static void of(int originX, int originY, int endX, int endY, BiConsumer<Integer,Integer> consumer) {
+    public static void of(int originX, int originY, int endX, int endY, BiConsumer<Integer, Integer> consumer) {
         new Ray(originX, originY, endX, endY).forEach(consumer);
     }
 
-    public void forEach(BiConsumer<Integer,Integer> consumer) {
+    public void forEach(BiConsumer<Integer, Integer> consumer) {
         int x2 = endX;
         int x1 = startX;
         int y2 = endY;

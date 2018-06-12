@@ -25,7 +25,7 @@ public class Dialog extends TextBox {
 
     @Override
     public void apply(TextGraphics surface) {
-        if ( showing ) {
+        if (showing) {
             ArrayUtils.iterate(x, x + w, 1, y, y + h, 1, (x, y) -> {
                 surface.setCharacter(x, y, TextCharacter.DEFAULT_CHARACTER);
             });

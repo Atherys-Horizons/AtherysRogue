@@ -44,9 +44,9 @@ public class GroundItem implements Entity {
 
     @Override
     public <T extends Entity> void interact(T entity) {
-        if ( entity instanceof Player ) {
+        if (entity instanceof Player) {
             location.getCave().removeEntity(this);
-            if ( !((Player) entity).getInventory().add(this.getItem()) ) {
+            if (!((Player) entity).getInventory().add(this.getItem())) {
                 Log.warn("Failed to pick up %s[%02d]", item.getName(), item.getAmount());
             } else {
                 Log.info("Picked up %s[%02d]", item.getName(), item.getAmount());

@@ -22,12 +22,14 @@ public class CellRay extends Ray {
     }
 
     public void forEach(Consumer<Cell> cellConsumer) {
-        forEach((x,y) -> cellConsumer.accept(cave.getCell(x, y)));
+        forEach((x, y) -> cellConsumer.accept(cave.getCell(x, y)));
     }
 
     public List<Cell> filter(Predicate<Cell> cellPredicate) {
         List<Cell> result = new ArrayList<>();
-        forEach(cell -> { if ( cellPredicate.test(cell) ) result.add(cell); });
+        forEach(cell -> {
+            if (cellPredicate.test(cell)) result.add(cell);
+        });
         return result;
     }
 

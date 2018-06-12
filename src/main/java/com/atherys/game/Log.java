@@ -7,6 +7,58 @@ import java.util.List;
 
 public final class Log {
 
+    private static final Log instance = new Log();
+    private List<LoggedMessage> loggedMessages = new ArrayList<>();
+
+    private Log() {
+    }
+
+    public static void info(String format, Object... objects) {
+        getInstance().log(String.format(format, objects), Severity.INFO);
+    }
+
+    public static void error(String format, Object... objects) {
+        getInstance().log(String.format(format, objects), Severity.ERROR);
+    }
+
+    public static void warn(String format, Object... objects) {
+        getInstance().log(String.format(format, objects), Severity.WARN);
+    }
+
+    public static void info(String msg) {
+        getInstance().log(msg, Severity.INFO);
+    }
+
+    public static void error(String msg) {
+        getInstance().log(msg, Severity.ERROR);
+    }
+
+    public static void warn(String msg) {
+        getInstance().log(msg, Severity.WARN);
+    }
+
+    public static Log getInstance() {
+        return instance;
+    }
+
+    public void log(String msg, Severity severity) {
+        this.loggedMessages.add(LoggedMessage.of(msg, severity));
+    }
+
+    public List<LoggedMessage> getLast(int amount) {
+        if (loggedMessages.isEmpty()) return new ArrayList<>();
+        List<LoggedMessage> result = new ArrayList<>(amount);
+        for (int i = loggedMessages.size() - 1; i >= loggedMessages.size() - amount; i--) {
+            if (i < 0) break;
+            result.add(loggedMessages.get(i));
+        }
+        return result;
+    }
+
+    public List<LoggedMessage> getLoggedMessages() {
+        return loggedMessages;
+    }
+
     public enum Severity {
         INFO(new TextColor.RGB(255, 255, 255), ""),
         WARN(new TextColor.RGB(255, 255, 0), "[WRN]"),
@@ -62,59 +114,6 @@ public final class Log {
         public String getMessage() {
             return contents;
         }
-    }
-
-    private static final Log instance = new Log();
-
-    private List<LoggedMessage> loggedMessages = new ArrayList<>();
-
-    private Log() {
-    }
-
-    public static void info(String format, Object... objects) {
-        getInstance().log(String.format(format, objects), Severity.INFO);
-    }
-
-    public static void error(String format, Object... objects) {
-        getInstance().log(String.format(format, objects), Severity.ERROR);
-    }
-
-    public static void warn(String format, Object... objects) {
-        getInstance().log(String.format(format, objects), Severity.WARN);
-    }
-
-    public static void info(String msg) {
-        getInstance().log(msg, Severity.INFO);
-    }
-
-    public static void error(String msg) {
-        getInstance().log(msg, Severity.ERROR);
-    }
-
-    public static void warn(String msg) {
-        getInstance().log(msg, Severity.WARN);
-    }
-
-    public void log(String msg, Severity severity) {
-        this.loggedMessages.add(LoggedMessage.of(msg, severity));
-    }
-
-    public List<LoggedMessage> getLast(int amount) {
-        if (loggedMessages.isEmpty()) return new ArrayList<>();
-        List<LoggedMessage> result = new ArrayList<>(amount);
-        for (int i = loggedMessages.size() - 1; i >= loggedMessages.size() - amount; i--) {
-            if ( i < 0 ) break;
-            result.add(loggedMessages.get(i));
-        }
-        return result;
-    }
-
-    public List<LoggedMessage> getLoggedMessages() {
-        return loggedMessages;
-    }
-
-    public static Log getInstance() {
-        return instance;
     }
 
 }

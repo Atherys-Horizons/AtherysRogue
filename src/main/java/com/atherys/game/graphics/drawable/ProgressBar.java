@@ -22,13 +22,13 @@ public class ProgressBar extends TitleBox {
         setProgress(initialProgress);
     }
 
+    public double getProgress() {
+        return progress;
+    }
+
     public void setProgress(double amount) {
         this.progress = amount >= 1.0d ? amount / max : MathUtils.clamp(0.0d, 1.0d, amount);
         this.title = String.format("%s[%.1f/%.1f]", actualTitle, progress * max, max);
-    }
-
-    public double getProgress() {
-        return progress;
     }
 
     public void add(double amount) {
@@ -39,12 +39,12 @@ public class ProgressBar extends TitleBox {
         setProgress(progress - amount);
     }
 
-    public void setMax(double max) {
-        this.max = max;
-    }
-
     public double getMax() {
         return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
     }
 
     @Override

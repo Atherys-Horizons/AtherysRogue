@@ -26,15 +26,15 @@ public class AbstractInventory extends HashSet<ItemStack> implements Inventory {
         ItemStack[][] itemMatrix = new ItemStack[size.getX()][size.getY()];
         Iterator<ItemStack> itemIterator = super.iterator();
         ArrayUtils.iterate(0, size.getX(), 1, 0, size.getY(), 1, (x, y) -> {
-            if ( itemIterator.hasNext() ) itemMatrix[x][y] = itemIterator.next();
+            if (itemIterator.hasNext()) itemMatrix[x][y] = itemIterator.next();
         });
         return itemMatrix;
     }
 
     @Override
     public boolean add(ItemStack item) {
-        for ( ItemStack itemStack : this ) {
-            if ( itemStack.equals(item) ) return itemStack.setAmount(itemStack.getAmount() + item.getAmount());
+        for (ItemStack itemStack : this) {
+            if (itemStack.equals(item)) return itemStack.setAmount(itemStack.getAmount() + item.getAmount());
         }
         return super.add(item);
     }

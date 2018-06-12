@@ -37,13 +37,13 @@ public class ItemStack implements Item {
     }
 
     @Override
-    public String getDescription() {
-        return description;
+    public void setName(String string) {
+        this.name = string;
     }
 
     @Override
-    public void setName(String string) {
-        this.name = string;
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ItemStack implements Item {
     }
 
     public boolean setAmount(int amount) {
-        if ( amount > MAX_ITEMSTACK_SIZE ) return false;
-        if ( amount < 0 ) return false;
+        if (amount > MAX_ITEMSTACK_SIZE) return false;
+        if (amount < 0) return false;
         this.amount = amount;
         return true;
     }
@@ -67,7 +67,7 @@ public class ItemStack implements Item {
         if (this == o) return true;
         if (!(o instanceof ItemStack)) return false;
         ItemStack itemStack = (ItemStack) o;
-        return  Objects.equals(type, itemStack.type) &&
+        return Objects.equals(type, itemStack.type) &&
                 Objects.equals(name, itemStack.name) &&
                 Objects.equals(description, itemStack.description);
     }

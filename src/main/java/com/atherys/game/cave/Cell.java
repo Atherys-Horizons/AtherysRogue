@@ -50,18 +50,18 @@ public class Cell {
     }
 
     public boolean isVisibleFrom(Vector2i from) {
-        if ( isBlocking() ) return true;
+        if (isBlocking()) return true;
         boolean[] visible = new boolean[]{true};
 
         Ray.of(
                 this.getLocation().getX(), this.getLocation().getY(),
                 from.getX(), from.getY(),
-                (x,y) -> {
+                (x, y) -> {
                     if (x.equals(this.getLocation().getX()) && y.equals(this.getLocation().getY())) return;
                     if (!visible[0]) return;
 
                     Cell lineCell = getLocation().getCave().getCell(x, y);
-                    if ( lineCell != null && lineCell.isBlocking() ) {
+                    if (lineCell != null && lineCell.isBlocking()) {
                         visible[0] = false;
                     }
                 });

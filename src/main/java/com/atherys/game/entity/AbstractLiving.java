@@ -31,7 +31,7 @@ public abstract class AbstractLiving implements Living {
 
     @Override
     public <T extends Entity> void interact(T entity) {
-        if ( entity instanceof Living ) ((Living) entity).removeHealth(1.0d);
+        if (entity instanceof Living) ((Living) entity).removeHealth(1.0d);
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class AbstractLiving implements Living {
     @Override
     public void setHealth(double amount) {
         double originalHealth = this.health;
-        this.health = amount < 0.0d ? 0.0d : ( amount > getMaxHealth() ? getMaxHealth() : amount );
+        this.health = amount < 0.0d ? 0.0d : (amount > getMaxHealth() ? getMaxHealth() : amount);
         EventManager.getInstance().post(new EntityHealthUpdateEvent(this, originalHealth - this.health));
     }
 

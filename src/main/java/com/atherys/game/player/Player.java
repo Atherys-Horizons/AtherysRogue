@@ -46,7 +46,7 @@ public class Player extends Human {
 
     @Override
     public void setHealth(double hp) {
-        if ( hp != 0.0d ) {
+        if (hp != 0.0d) {
             super.setHealth(hp);
             return;
         }

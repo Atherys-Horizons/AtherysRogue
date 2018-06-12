@@ -7,6 +7,14 @@ import java.util.Collection;
 
 public interface Surface extends Drawable {
 
+    static Surface of(Drawable... drawables) {
+        SimpleSurface surface = new SimpleSurface();
+        for (Drawable drawable : drawables) {
+            surface.add(drawable);
+        }
+        return surface;
+    }
+
     Collection<Drawable> getDrawables();
 
     void add(Drawable drawable);
@@ -15,13 +23,5 @@ public interface Surface extends Drawable {
 
     default void apply(TextGraphics graphics) {
         getDrawables().forEach(drawable -> drawable.apply(graphics));
-    }
-
-    static Surface of(Drawable... drawables) {
-        SimpleSurface surface = new SimpleSurface();
-        for (Drawable drawable : drawables) {
-            surface.add(drawable);
-        }
-        return surface;
     }
 }

@@ -9,7 +9,7 @@ public class KeyMapping {
     private KeyStroke keyStroke;
     private Consumer<KeyStroke> action;
 
-    public KeyMapping (KeyStroke keyStroke, Consumer<KeyStroke> action) {
+    public KeyMapping(KeyStroke keyStroke, Consumer<KeyStroke> action) {
         this.keyStroke = keyStroke;
         this.action = action;
     }

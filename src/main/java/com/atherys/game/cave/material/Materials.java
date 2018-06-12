@@ -18,9 +18,9 @@ ASCII:
  */
 public final class Materials {
 
-    public static final TextColor.RGB FLOOR_COLOR =  new TextColor.RGB(48, 48, 48);
+    public static final TextColor.RGB FLOOR_COLOR = new TextColor.RGB(48, 48, 48);
 
-    public static final TextColor.RGB WALL_COLOR =  new TextColor.RGB(168, 168, 168);
+    public static final TextColor.RGB WALL_COLOR = new TextColor.RGB(168, 168, 168);
 
     public static final TextCharacter SHADOW_CHARACTER = new TextCharacter('▒', new TextColor.RGB(32, 32, 32), TextColor.ANSI.BLACK);
 
@@ -75,7 +75,7 @@ public final class Materials {
                     ' ',
                     new TextColor.RGB(FLOOR_COLOR.getRed() + 16, FLOOR_COLOR.getGreen() + 16, FLOOR_COLOR.getBlue() + 16),
                     FLOOR_COLOR
-        )
+            )
     );
 
     public static final Material WATER = new FloorMaterial("water", false, new TextCharacter('~', new TextColor.RGB(0, 127, 255), TextColor.ANSI.BLACK, SGR.ITALIC));

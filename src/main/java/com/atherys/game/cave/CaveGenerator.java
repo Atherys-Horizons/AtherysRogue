@@ -49,9 +49,9 @@ public class CaveGenerator {
 
     private void generateItems() {
         ArrayUtils.forEach(wallMap, (r, c, v) -> {
-            if ( v ) return;
+            if (v) return;
 
-            if ( Math.random() < ITEM_GENERATION_CHANCE ) {
+            if (Math.random() < ITEM_GENERATION_CHANCE) {
                 entities.add(new GroundItem(ItemGenerator.getRandom(4), Location.of(cave, c, r)));
             }
         });

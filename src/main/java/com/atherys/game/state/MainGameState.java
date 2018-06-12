@@ -72,12 +72,10 @@ public class MainGameState extends GraphicalState {
         surface.add(0, new LogView("Log", caveView.getX(), caveView.getY() + caveView.getHeight() + 1, caveView.getWidth() + info.getWidth() - 1, 9));
         surface.add(1, new InventoryView(info.getX() + 2, info.getY() + 22, player.getInventory()));
         surface.add(1, new HealthBar(player, info.getX() + 2, info.getY() + 19, info.getWidth() - 5));
+
         terminal.exec(Terminal::clearScreen);
 
-        Controls.register(new KeyStroke('6', false, false), stroke -> {
-            player.moveEast();
-            player.removeHealth(1.0d);
-        });
+        Controls.register(new KeyStroke('6', false, false), stroke -> player.moveEast());
         Controls.register(new KeyStroke('4', false, false), stroke -> player.moveWest());
         Controls.register(new KeyStroke('8', false, false), stroke -> player.moveNorth());
         Controls.register(new KeyStroke('5', false, false), stroke -> player.moveSouth());

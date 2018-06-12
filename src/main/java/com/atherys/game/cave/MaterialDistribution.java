@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class MaterialDistribution extends HashMap<Material,Double> {
+public class MaterialDistribution extends HashMap<Material, Double> {
 
     private Map<Class<? extends Material>, Material> defaults = new HashMap<>();
 
@@ -39,11 +39,11 @@ public class MaterialDistribution extends HashMap<Material,Double> {
         double lastDiff = 1.0d;
 
         // Iterate over every material in the MaterialDistribution
-        for ( Map.Entry<Material,Double> object : this.entrySet() ) {
+        for (Map.Entry<Material, Double> object : this.entrySet()) {
             // If the material answers the requirements
-            if ( k <= object.getValue() && clazz.isAssignableFrom(object.getKey().getClass())) {
+            if (k <= object.getValue() && clazz.isAssignableFrom(object.getKey().getClass())) {
                 double diff = Math.abs(k - object.getValue());
-                if ( diff < lastDiff ) {
+                if (diff < lastDiff) {
                     result = object.getKey();
                     lastDiff = diff;
                 }

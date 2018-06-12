@@ -24,7 +24,7 @@ public class Rectangle {
     }
 
     public boolean contains(Vector2<Integer> vec) {
-        return ( vec.getX() > origin.getX() && vec.getX() < size.getX() ) && ( vec.getY() > origin.getY() && vec.getY() < size.getY() );
+        return (vec.getX() > origin.getX() && vec.getX() < size.getX()) && (vec.getY() > origin.getY() && vec.getY() < size.getY());
     }
 
     public Rectangle translate(Vector2<Integer> translation) {

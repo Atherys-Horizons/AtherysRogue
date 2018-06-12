@@ -19,10 +19,10 @@ public class Circle {
     }
 
     public boolean contains(Vector2i position) {
-        return (position.getX() - center.getX())*(position.getX() - center.getX()) + (position.getY() - center.getY())*(position.getY() - center.getY()) < radius*radius;
+        return (position.getX() - center.getX()) * (position.getX() - center.getX()) + (position.getY() - center.getY()) * (position.getY() - center.getY()) < radius * radius;
     }
 
     public boolean borders(Vector2i position) {
-        return (position.getX() - center.getX())*(position.getX() - center.getX()) + (position.getY() - center.getY())*(position.getY() - center.getY()) == radius*radius;
+        return (position.getX() - center.getX()) * (position.getX() - center.getX()) + (position.getY() - center.getY()) * (position.getY() - center.getY()) == radius * radius;
     }
 }

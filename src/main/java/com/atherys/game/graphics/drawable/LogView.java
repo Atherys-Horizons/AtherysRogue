@@ -24,7 +24,7 @@ public class LogView extends TitleBox {
     public void apply(TextGraphics surface) {
         super.apply(surface);
         List<Log.LoggedMessage> lines = Log.getInstance().getLast(getHeight() - 1);
-        if ( lines.size() == 0 ) return;
+        if (lines.size() == 0) return;
         for (int i = 0; i < lines.size(); i++) {
             String message = lines.get(i) == null ? "None" : lines.get(i).getMessage();
             surface.putString(x + 1, y + 1 + i, (i + 1) + ": " + padRight(message, w - 2 - message.length()));

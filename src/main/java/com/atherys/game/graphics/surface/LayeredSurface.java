@@ -8,7 +8,7 @@ import java.util.*;
 public class LayeredSurface implements Surface {
 
     //private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Map<Integer,Set<Drawable>> drawableLayers = new HashMap<>();
+    private Map<Integer, Set<Drawable>> drawableLayers = new HashMap<>();
 
     public LayeredSurface() {
     }
@@ -16,7 +16,7 @@ public class LayeredSurface implements Surface {
     @Override
     public Collection<Drawable> getDrawables() {
         List<Drawable> all = new ArrayList<>();
-        drawableLayers.forEach((k,v) -> all.addAll(v));
+        drawableLayers.forEach((k, v) -> all.addAll(v));
         return all;
     }
 
@@ -27,17 +27,17 @@ public class LayeredSurface implements Surface {
 
     @Override
     public void remove(Drawable drawable) {
-        drawableLayers.forEach((k,v) -> v.remove(drawable));
+        drawableLayers.forEach((k, v) -> v.remove(drawable));
     }
 
     public void add(Integer layer, Drawable drawable) {
-        if ( !drawableLayers.containsKey(layer) ) drawableLayers.put(layer, new HashSet<>());
+        if (!drawableLayers.containsKey(layer)) drawableLayers.put(layer, new HashSet<>());
         drawableLayers.get(layer).add(drawable);
     }
 
     @Override
     public void apply(TextGraphics graphics) {
-        drawableLayers.forEach((k,v) -> v.forEach(drawable -> drawable.apply(graphics)));
+        drawableLayers.forEach((k, v) -> v.forEach(drawable -> drawable.apply(graphics)));
         //executor.submit(() -> {
         //    drawableLayers.forEach((k,v) -> v.forEach(drawable -> drawable.apply(graphics)));
         //});
